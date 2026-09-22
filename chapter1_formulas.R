@@ -52,3 +52,15 @@ cv <- function(x) {
   std_deviation(x) / abs(mean(x))
 }
 
+# Moments & Shape measures
+
+# Moment of order r w.r.t. c
+moment <- function(x, r, c) {
+  mean((x - c)^r)
+}
+
+# Ordinary moment
+ord_moment <- function(x, r) moment(x, r, 0)
+
+# Central moment
+cnt_moment <- function(x, r) moment(x, r, mean(x))
