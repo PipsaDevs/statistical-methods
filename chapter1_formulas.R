@@ -1,4 +1,4 @@
-
+# Basic stuff
 # Absolute frequency (count how many times x number appears in array)
 absolute_freq <- function(x) table(x)
 
@@ -21,3 +21,12 @@ cum_absolute_freq <- function(x) cumsum(table(x))
 
 # Cumulative relative frequency (F_i = N_i / N)
 cum_relative_freq <- function(x) cumsum(prop.table(table(x)))
+
+# Position measures are all covered by R
+# Dispersion measures
+
+mean_deviation <- function(x, p = mean(x)) {
+  return(mean(abs(x - p)))
+}
+
+
