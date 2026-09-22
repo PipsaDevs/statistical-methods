@@ -1,6 +1,14 @@
 # Basic stuff
+
+
 # Absolute frequency (count how many times x number appears in array)
 absolute_freq <- function(x) table(x)
+
+# Mode (warning: Mode only returns the type of object passed as an argument)
+stat_mode <- function(x) {
+  tbl <- absolute_freq(x)
+  as.numeric(names(tbl)[tbl == max(tbl)])
+}
 
 # How many times a number appears in an array
 absolute_freq_of_number <- function(x, y) {
