@@ -72,3 +72,18 @@ ord_moment <- function(x, r) moment(x, r, 0)
 
 # Central moment
 cnt_moment <- function(x, r) moment(x, r, mean(x))
+
+# Pearson's skewness coefficient
+p_skewness <- function(x) (mean(x) - stat_mode(x))/std_deviation(x)
+
+# Fisher's skewness coefficient
+f_skewness <- function(x) {
+  cnt_moment(x, 3)/(std_deviation(x)^3)
+}
+
+# Fisher's kurtosis coefficient
+kurtosis <- function(x) {
+  g <- cnt_moment(x, 4)/(std_deviation(x)^4)
+  g - 3
+}
+
