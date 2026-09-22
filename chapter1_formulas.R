@@ -26,29 +26,29 @@ cum_relative_freq <- function(x) cumsum(prop.table(table(x)))
 # Dispersion measures
 
 mean_deviation <- function(x, p = mean(x)) {
-  return(mean(abs(x - p)))
+  mean(abs(x - p))
 }
 
 # Mean Squared Error
 mse <- function(x, p = mean(x)) {
-  return(mean((x - p)^2))
+  mean((x - p)^2)
 }
 
 
 # Warning: Do not mistake with var() function for quasi-variance
 variance <- function(x) {
-  return(mean((x - mean(x))^2))
+  mean((x - mean(x))^2)
 }
 
 std_deviation <- function(x) {
-  return(sqrt(variance(x)))
+  sqrt(variance(x))
 }
 
 std_variable <- function(x) {
-  return((x - mean(x)) / std_deviation(x))
+  (x - mean(x)) / std_deviation(x)
 }
 
 cv <- function(x) {
-  return(std_deviation(x) / abs(mean(x)))
+  std_deviation(x) / abs(mean(x))
 }
 
