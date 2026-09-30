@@ -29,3 +29,14 @@ isIndependent <- function(table) {
 
   return(isTRUE(all.equal(c(freqs), c(relativeProducts))))
 }
+
+#Get the covariance
+covariance <- function(x, y) {
+  mean((x - mean(x)) * (y - mean(y)))
+}
+
+#Get the linear correlation by using the covariance
+linear_correlation <- function(x, y) {
+  covariance(x, y) / (std_deviation(x) * std_deviation(y))
+}
+
