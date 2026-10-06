@@ -1,42 +1,63 @@
-#Get data "x" (Ex: c(1,2,3,4,5,6)) from a vector to a table in R, by row, and with "NRows" rows
+# Get data "x" (Ex: c(1,2,3,4,5,6)) from a vector to a table in R, by row, and with "NRows" rows
 tableFromVector <- function(x, NRows) {
   as.table(matrix(x, nrow = NRows, byrow = TRUE))
 }
 
-#Get data from the two variables "X" and "Y" from their vectors to a table in R
+# Get data from the two variables "X" and "Y" from their vectors to a table in R
 tableFromVariables <- function(X, Y) {
   table(X, Y)
 }
 
-#Get the marginal X data from your table
+# Get the marginal X data from your table
 marginalX <- function(table) {
   margin.table(table, 1)
 }
 
-#Get the marginal Y data from your table
+# Get the marginal Y data from your table
 marginalY <- function(table) {
   margin.table(table, 2)
 }
 
-#Check if your variables are independent
+# Check if your variables are independent
 isIndependent <- function(table) {
-  freqs <- relative_freq(table) #Get relative frequencies
-
-  relativeMargX <- marginalX(freqs) #Marginal of relative X
-  relativeMargY <- marginalY(freqs) #Marginal of relative Y
-
-  relativeProducts <- outer(relativeMargX, relativeMargY, "*") #Products of the marginals (what would result if variables were independent)
-
+  freqs <- relative_freq(table) # Get relative frequencies
+  
+  relativeMargX <- marginalX(freqs) # Marginal of relative X
+  relativeMargY <- marginalY(freqs) # Marginal of relative Y
+  
+  relativeProducts <- outer(relativeMargX, relativeMargY, "*") # Products of the marginals (what would result if variables were independent)
+  
   return(isTRUE(all.equal(c(freqs), c(relativeProducts))))
 }
 
-#Get the covariance
+# Get the covariance
 covariance <- function(x, y) {
   mean((x - mean(x)) * (y - mean(y)))
 }
 
-#Get the linear correlation by using the covariance
+# Get the linear correlation by using the covariance
 linear_correlation <- function(x, y) {
   covariance(x, y) / (std_deviation(x) * std_deviation(y))
 }
 
+# Conditional distribution table generator with abs and rel freq
+cond_dist_gen <- function(values, condition_var = c("x", "y"), value) {
+  condition_var <- match.arg(condition_var)
+  if (condition_var == "x") {
+    counts <- values[as.character(value), ]
+    rel_freq <- counts / sum(counts)
+    data.frame(
+      y = names(counts),
+      absolute = as.vector(counts),
+      relative = as.vector(rel_freq)
+    )
+  } else {
+    counts <- values[, as.character(value)]
+    rel_freq <- counts / sum(counts)
+    data.frame(
+      x = names(counts),
+      absolute = as.vector(counts),
+      relative = as.vector(rel_freq)
+    )
+  }
+}
