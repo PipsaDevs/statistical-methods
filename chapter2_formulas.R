@@ -61,3 +61,26 @@ cond_dist_gen <- function(values, condition_var = c("x", "y"), value) {
     )
   }
 }
+
+# Moment of order r, s
+mom_ord <- function(values, r, s, a, b) {
+  x <- as.numeric(rownames(values))
+  y <- as.numeric(colnames(values))
+  res <- 0
+  for(i in 1:length(x)) {
+    for(j in 1:length(y)){
+      res <- res + (((x[i] - a)^r)*((y[j] - b)^s)*values[i, j])
+    }
+  }
+  return(res)
+}
+
+# Central moment
+mom_cent <- function(values, r, s) {
+  mom_ord(values, 
+          r, 
+          s, 
+          mean(as.numeric(rownames(values))), 
+          mean(as.numeric(colnames(values)))
+          )
+}
