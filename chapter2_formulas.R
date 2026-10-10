@@ -84,3 +84,76 @@ mom_cent <- function(values, r, s) {
           mean(as.numeric(colnames(values)))
           )
 }
+
+# modeling
+modelFunc <- function(dataX, dataY, fitting) {
+  n <- length(dataY)
+  err <- dataY
+  
+  # preparing graphical info
+  p <- plot(dataX, dataY)
+  curve <- NULL
+  
+  # the function must perform different operations depending on the type of fitting specified, but it mostly follows the same steps for each type
+  if(fitting == "l") {
+    # LINEAR
+    model <- lm(dataY ~ dataX)
+    
+    a <- coef(model)[1]
+    b <- coef(model)[2]
+    
+    curve <- curve((a + b*x), from=min(dataX), to=max(dataX), col='blue', add=TRUE)
+    
+    yEst <- a+b*dataX
+    err <- err - yEst
+  }
+  else if(fitting == "e") {
+    # EXPONENTIAL
+    lnX <- log(dataX)
+    lnY <- log(dataY)
+    
+    model <- lm(lnY ~ lnX)
+    
+    a<-exp(coef(model))[1]
+    b<-coef(model)[2]
+    
+    curve <- curve((a*x^b), from=min(dataX), to=max(dataX), col='green', add=TRUE)
+    
+    yEst <- a*x^b
+    err <- err - yEst
+  }
+  else if(fitting == "i") {
+    # HYPERBOLIC / INVERSE
+    model <- lm(1/dataY ~ dataX)
+    
+    a <- coef(model)[1]
+    b <- coef(model)[2]
+    
+    curve <- curve((1/(a+b*x)), from=min(dataX), to=max(dataX), col='red', add=TRUE)
+    
+    yEst <- 1/(a+b*dataX)
+    err <- err - yEst
+  }
+  else if(fitting == "q") {
+    # QUADRATIC
+    dataX2 <- dataX^2
+    
+    model <- lm(dataY ~ dataX + dataX2)
+    
+    a <- coef(model)[3]
+    b <- coef(model)[2]
+    c <- coef(model)[1]
+    
+    curve <- curve((a*(x^2)+(b*x)+c), from=min(dataX), to=max(dataX), col='black', add=TRUE)
+    
+    yEst <- a*(dataX2)+(b*dataX)+c
+    err <- err - yEst
+  }
+  # calculation of final variables
+  MSE <- mean(err^2)
+  varY <- var(dataY) * (n-1)/n
+  R2 <- 1 - (MSE / varY)
+  
+  result = list("MSE" = MSE, "Variance of Y" = varY, "R^2" = R2, "Plot" = p, "Curve" = curve)
+  return(result)
+}
