@@ -3,29 +3,44 @@ tableFromVector <- function(x, NRows) {
   as.table(matrix(x, nrow = NRows, byrow = TRUE))
 }
 
-# Get data from the two variables "X" and "Y" from their vectors to a table in R
-tableFromVariables <- function(X, Y) {
-  table(X, Y)
+# Get data from the two variables "x" and "y" from their vectors to a table in R
+tableFromVariables <- function(x, y) {
+  table(x, y)
+}
+
+#Get the x, y value vectors from a table
+tableToVectors <- function(tbl) {
+  df_freq <- as.data.frame(tbl)
+  
+  x_vec <- rep(df_freq[[1]], times = df_freq$Freq)
+  y_vec <- rep(df_freq[[2]], times = df_freq$Freq)
+  
+  if (!any(is.na(suppressWarnings(as.numeric(as.character(x_vec)))))) {
+    x_vec <- as.numeric(as.character(x_vec))
+  }
+  if (!any(is.na(suppressWarnings(as.numeric(as.character(y_vec)))))) {
+    y_vec <- as.numeric(as.character(y_vec))
+  }
+  
+  return(data.frame(x = x_vec, y = y_vec)) #Returns data frame d. You can access d$x and d$y for the variable x vector and the variable y vector
 }
 
 # Get the marginal X data from your table
-marginalX <- function(table) {
-  margin.table(table, 1)
+marginalX <- function(x, y) {
+  margin.table(tableFromVariables(x, y), 1)
 }
 
 # Get the marginal Y data from your table
-marginalY <- function(table) {
-  margin.table(table, 2)
+marginalY <- function(x, y) {
+  margin.table(tableFromVariables(x, y), 2)
 }
 
 # Check if your variables are independent
-isIndependent <- function(table) {
-  freqs <- relative_freq(table) # Get relative frequencies
+isIndependent <- function(x, y) {
+  tbl <- tableFromVariables(x, y)
+  freqs <- prop.table(tbl) 
   
-  relativeMargX <- marginalX(freqs) # Marginal of relative X
-  relativeMargY <- marginalY(freqs) # Marginal of relative Y
-  
-  relativeProducts <- outer(relativeMargX, relativeMargY, "*") # Products of the marginals (what would result if variables were independent)
+  relativeProducts <- outer(margin.table(freqs, 1), margin.table(freqs, 2), "*")
   
   return(isTRUE(all.equal(c(freqs), c(relativeProducts))))
 }
