@@ -57,3 +57,4 @@ time_series <- function(arr, initialyear, freq){
   plot ( desestM )
   lines ( regL , col =6)
 }
+
