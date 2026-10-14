@@ -73,3 +73,28 @@ autoCorrel <- function ( data , n ) {
   sqrt ( summary ( lm ( xx1 ~ xx2 )) $ r.squared )
 }
 
+# The frequency searched will be the one that has the highest correlation.
+# For that, we check which one the highest is between 1 and 12 and that will be the answer.
+calculateCorrel <- function(data) {
+  
+  biggest <- 0
+  bigfreq <- 1
+  top <- 12
+  
+  if (length(data) < 12){
+    top <- length(data)-1
+  }
+  
+  for (i in 1:top){
+    current <- autoCorrel(data, i)
+    
+    if (current > biggest){
+      biggest = current
+      bigfreq = i
+    }
+    
+  }
+  
+  print(paste("The frequency will be: ", bigfreq, ", with correlation: ", round(biggest, 5)))
+  
+}
