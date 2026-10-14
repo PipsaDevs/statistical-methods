@@ -63,7 +63,6 @@ time_series <- function(arr, initialyear, freq){
   lines ( regL , col =6)
 }
 
-
 # Function that calculates autocorrelation for a frequency n
 autoCorrel <- function ( data , n ) {
   # Remove the last n data points
