@@ -2,7 +2,7 @@
 moving_average <- function(arr, order){
   
   tmparr <- c(1)
-    
+  
   for (i in 1:order){
     tmparr[i] = 1
   }
@@ -19,14 +19,14 @@ moving_average <- function(arr, order){
 time_series <- function(arr, initialyear, freq){
   
   library(tidyverse)
-
+  
   uk <- ts ( arr , start = c (initialyear , 1) , frequency = freq)
   # print(qrt_car_sales)
   
   tend <- moving_average(uk, freq)
   
-  # plot (qrt_car_sales)
-  # lines ( tend , col = "purple")
+  plot (uk)
+  #lines ( tend , col = "purple")
   
   est_aleM <- uk / tend
   # print("est_aleM:  )
@@ -54,7 +54,23 @@ time_series <- function(arr, initialyear, freq){
   regL <- ts ( predict.lm ( model ) , start = c (initialyear , 1) ,
                frequency =freq)
   
+  print("Intercept line:")
+  intercept <- round(model$coefficients[1],5)
+  xslope <- round(model$coefficients[2],5)
+  print(paste(intercept, " ", xslope, "x"))
+  
   plot ( desestM )
   lines ( regL , col =6)
+}
+
+
+# Function that calculates autocorrelation for a frequency n
+autoCorrel <- function ( data , n ) {
+  # Remove the last n data points
+  xx1 <- head ( data , -n )
+  # Remove the first n data points
+  xx2 <- tail ( data , -n )
+  # correlation
+  sqrt ( summary ( lm ( xx1 ~ xx2 )) $ r.squared )
 }
 
