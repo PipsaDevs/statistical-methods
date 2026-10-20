@@ -278,3 +278,19 @@ detect_outliers <- function(x) {
         extreme_outliers = ext_outliers
     ))
 }
+
+
+#' Root mean square (rms)
+#' 
+#' Computes the root mean square AKA the quadratic mean
+#' 
+#' @param x Raw data vector
+#' @return Do i really need to explain this
+#' @examples
+#' rms(c(2, 0, 0, 4, 6, 9, 6, 7, 6, 6, 1))
+#' @export
+
+rms <- function(x) {
+  sqrt(mean(x^2))
+}
+
