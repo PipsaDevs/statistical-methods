@@ -32,45 +32,64 @@ moving_average <- function(arr, order){
 #' @param arr Numeric vector of time series observations.
 #' @param initialyear Starting year for the time series.
 #' @param freq Seasonal frequency (e.g., 4 for quarterly, 12 for monthly).
-#' @return Displays plots and prints trend equation to console.
+#' @return Displays plots and prints trend equation to console. Also returns a list containing the original time series, trend, seasonal indices, deseasonalized data, and trend model.
 #' @examples
 #' data_vals <- c(10, 15, 8, 20, 12, 18, 9, 25)
 #' time_series(data_vals, initialyear = 2020, freq = 4)
 #' @export
-time_series <- function(arr, initialyear, freq){
+time_series <- function(data_array, initial_year, freq) {
 
-  uk <- ts ( arr , start = c (initialyear , 1) , frequency = freq)
+  # time series data
+  ts_data <- ts(data_array, start = c(initial_year, 1), frequency = freq)
 
-  tend <- moving_average(uk, freq)
+  trend <- moving_average(ts_data, freq)
 
-  plot (uk)
+  plot(ts_data, main = "Original Time Series", ylab = "Values", xlab = "Time")
 
-  est_aleM <- uk / tend
+  season_random <- ts_data / trend
 
-  est1M <- colMeans ( matrix ( est_aleM , ncol =freq , byrow = T ) ,
-                      na.rm = T )
+  raw_seasonal_indices <- colMeans(matrix(season_random, ncol = freq, byrow = TRUE), na.rm = TRUE)
 
-  estM <- est1M / mean ( est1M )
+  seasonal_indices <- raw_seasonal_indices / mean(raw_seasonal_indices)
 
-  aleM <- est_aleM / estM
+  random_component <- season_random / seasonal_indices
 
-  desestM <- uk / estM
+  deseasonalized_data <- ts_data / seasonal_indices
 
-  xx <- seq_along(uk)
+  time_index <- seq_along(ts_data)
+  trend_model <- lm(deseasonalized_data ~ time_index)
 
-  model <- lm ( desestM ~ xx )
+  trend_line <- ts(predict.lm(trend_model), start = c(initial_year, 1), frequency = freq)
 
-  regL <- ts ( predict.lm ( model ) , start = c (initialyear , 1) ,
-               frequency =freq)
+  cat("\n-------- TIME SERIES DECOMPOSITION SUMMARY --------\n")
 
-  print("Intercept line:")
+  cat("\nADJUSTED SEASONAL INDICES (Multiplicative):\n")
+  print(round(seasonal_indices, 4))
+  cat("Note: Values > 1 indicate peaks, < 1 indicate troughs for that period.\n")
 
-  obtain_function_from_model(model)
+  cat("\nLINEAR TREND MODEL (On Deseasonalized Data):\n")
+  coeffs <- coef(trend_model)
+  cat(sprintf("Equation: Y = %.4f + %.4f * t\n", coeffs[1], coeffs[2]))
+  cat(sprintf("Intercept (Beta_0): %.4f\n", coeffs[1]))
+  cat(sprintf("Slope     (Beta_1): %.4f\n", coeffs[2]))
+  cat(sprintf("R-squared:          %.4f\n", summary(trend_model)$r.squared))
 
-  plot ( desestM )
-  lines ( regL , col =6)
+  cat("\nFORMULA:\n")
+  obtain_function_from_model(trend_model)
+  cat("----------------------------------\n\n")
+
+  plot(deseasonalized_data, main = "Deseasonalized Data with Trend Line",
+       ylab = "Deseasonalized Values", xlab = "Time")
+  lines(trend_line, col = 6, lwd = 2)
+
+  list(
+      ts_data = ts_data,
+      trend = trend,
+      seasonal_indices = seasonal_indices,
+      deseasonalized_data = deseasonalized_data,
+      trend_model = trend_model
+  )
 }
-
 #' Autocorrelation for a Specific Lag
 #'
 #' Calculates the correlation between a time series and itself lagged by n periods.
