@@ -279,7 +279,6 @@ detect_outliers <- function(x) {
     ))
 }
 
-<<<<<<< HEAD
 #' Compute Quantile for Discrete or Grouped Continuous Data
 #'
 #' @param x Numeric vector of ordered raw data OR interval lower bounds if grouped.
@@ -343,7 +342,6 @@ calculate_rms <- function(x, n = NULL) {
 
   return(rms_val)
 }
-=======
 
 #' Root mean square (rms)
 #' 
@@ -358,5 +356,3 @@ calculate_rms <- function(x, n = NULL) {
 rms <- function(x) {
   sqrt(mean(x^2))
 }
-
->>>>>>> e11994e486630d4b27802dc0f329093f3491976c
