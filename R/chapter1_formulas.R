@@ -279,6 +279,7 @@ detect_outliers <- function(x) {
     ))
 }
 
+<<<<<<< HEAD
 #' Compute Quantile for Discrete or Grouped Continuous Data
 #'
 #' @param x Numeric vector of ordered raw data OR interval lower bounds if grouped.
@@ -342,3 +343,20 @@ calculate_rms <- function(x, n = NULL) {
 
   return(rms_val)
 }
+=======
+
+#' Root mean square (rms)
+#' 
+#' Computes the root mean square AKA the quadratic mean
+#' 
+#' @param x Raw data vector
+#' @return Do i really need to explain this
+#' @examples
+#' rms(c(2, 0, 0, 4, 6, 9, 6, 7, 6, 6, 1))
+#' @export
+
+rms <- function(x) {
+  sqrt(mean(x^2))
+}
+
+>>>>>>> e11994e486630d4b27802dc0f329093f3491976c
