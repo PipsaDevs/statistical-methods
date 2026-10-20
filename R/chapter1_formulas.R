@@ -249,3 +249,32 @@ kurtosis <- function(x) {
   g <- cnt_moment(x, 4)/(std_deviation(x)^4)
   g - 3
 }
+
+#' Detect Moderate and Extreme Outliers using Interquartile Range
+#'
+#' @param x A numeric vector of observations.
+#' @return A list containing moderate and extreme outliers.
+#' @examples
+#' detect_outliers(c(1, 2, 3, 4, 5, 100, 200))
+#' @export
+detect_outliers <- function(x) {
+    q1 <- quantile(x, 0.25)
+    q3 <- quantile(x, 0.75)
+    iqr <- q3 - q1
+
+    mod_lower <- q1 - 1.5 * iqr
+    mod_upper <- q3 + 1.5 * iqr
+    ext_lower <- q1 - 3.0 * iqr
+    ext_upper <- q3 + 3.0 * iqr
+
+    mod_outliers <- x[x < mod_lower | x > mod_upper]
+    ext_outliers <- x[x < ext_lower | x > ext_upper]
+
+    return(list(
+        iqr = iqr,
+        moderate_bounds = c(lower = mod_lower, upper = mod_upper),
+        extreme_bounds = c(lower = ext_lower, upper = ext_upper),
+        moderate_outliers = mod_outliers,
+        extreme_outliers = ext_outliers
+    ))
+}
