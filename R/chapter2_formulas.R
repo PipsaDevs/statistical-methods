@@ -38,17 +38,17 @@ tableFromVariables <- function(x, y) {
 #' @export
 tableToVectors <- function(tbl) {
   df_freq <- as.data.frame(tbl)
-  
+
   x_vec <- rep(df_freq[[1]], times = df_freq$Freq)
   y_vec <- rep(df_freq[[2]], times = df_freq$Freq)
-  
+
   if (!any(is.na(suppressWarnings(as.numeric(as.character(x_vec)))))) {
     x_vec <- as.numeric(as.character(x_vec))
   }
   if (!any(is.na(suppressWarnings(as.numeric(as.character(y_vec)))))) {
     y_vec <- as.numeric(as.character(y_vec))
   }
-  
+
   return(data.frame(x = x_vec, y = y_vec)) #Returns data frame d. You can access d$x and d$y for the variable x vector and the variable y vector
 }
 
@@ -92,10 +92,10 @@ marginalY <- function(x, y) {
 #' @export
 isIndependent <- function(x, y) {
   tbl <- tableFromVariables(x, y)
-  freqs <- prop.table(tbl) 
-  
+  freqs <- prop.table(tbl)
+
   relativeProducts <- outer(margin.table(freqs, 1), margin.table(freqs, 2), "*")
-  
+
   return(isTRUE(all.equal(c(freqs), c(relativeProducts))))
 }
 
@@ -193,10 +193,10 @@ mom_ord <- function(values, r, s, a, b) {
 #' @return Numeric central moment value.
 #' @export
 mom_cent <- function(values, r, s) {
-  mom_ord(values, 
-          r, 
-          s, 
-          mean(as.numeric(rownames(values))), 
+  mom_ord(values,
+          r,
+          s,
+          mean(as.numeric(rownames(values))),
           mean(as.numeric(colnames(values)))
           )
 }
@@ -213,7 +213,7 @@ mom_cent <- function(values, r, s) {
 #'   - "i": Hyperbolic/Inverse (y = 1 / (a + bx))
 #'   - "q": Quadratic (y = ax^2 + bx + c)
 #'   - "t": Trigonometric (y = a·sin(x) + b·cos(x))
-#' @return A named list: MSE, Variance of Y, R^2, Plot, Curve.
+#' @return A named list: Model, MSE, Variance of Y, R^2, Plot, Curve.
 #' @examples
 #' x <- c(1, 2, 3, 4, 5)
 #' y <- c(2, 4, 5, 8, 10)
@@ -222,21 +222,21 @@ mom_cent <- function(values, r, s) {
 modelFunc <- function(dataX, dataY, fitting) {
   n <- length(dataY)
   err <- dataY
-  
+
   # preparing graphical info
   p <- plot(dataX, dataY)
   curve <- NULL
-  
+
   # the function must perform different operations depending on the type of fitting specified, but it mostly follows the same steps for each type
   if(fitting == "l") {
     # LINEAR
     model <- lm(dataY ~ dataX)
-    
+
     a <- coef(model)[1]
     b <- coef(model)[2]
-    
+
     curve <- curve((a + b*x), from=min(dataX), to=max(dataX), col='blue', add=TRUE)
-    
+
     yEst <- a+b*dataX
     err <- err - yEst
   }
@@ -244,61 +244,73 @@ modelFunc <- function(dataX, dataY, fitting) {
     # EXPONENTIAL
     lnX <- log(dataX)
     lnY <- log(dataY)
-    
+
     model <- lm(lnY ~ lnX)
-    
+
     a<-exp(coef(model))[1]
     b<-coef(model)[2]
-    
+
     curve <- curve((a*x^b), from=min(dataX), to=max(dataX), col='green', add=TRUE)
-    
+
     yEst <- a*x^b
     err <- err - yEst
   }
   else if(fitting == "i") {
     # HYPERBOLIC / INVERSE
     model <- lm(1/dataY ~ dataX)
-    
+
     a <- coef(model)[1]
     b <- coef(model)[2]
-    
+
     curve <- curve((1/(a+b*x)), from=min(dataX), to=max(dataX), col='red', add=TRUE)
-    
+
     yEst <- 1/(a+b*dataX)
     err <- err - yEst
   }
   else if(fitting == "q") {
     # QUADRATIC
     dataX2 <- dataX^2
-    
+
     model <- lm(dataY ~ dataX + dataX2)
-    
+
     a <- coef(model)[3]
     b <- coef(model)[2]
     c <- coef(model)[1]
-    
+
     curve <- curve((a*(x^2)+(b*x)+c), from=min(dataX), to=max(dataX), col='black', add=TRUE)
-    
+
     yEst <- a*(dataX2)+(b*dataX)+c
     err <- err - yEst
   }
   else if(fitting == "t") {
     model <- lm(dataY ~ 0 + sin(dataX) + cos(dataX))
-    
+
     a <- coef(model)[1]
     b <- coef(model)[2]
-    
+
     curve <- curve((a*sin(x) + b*cos(x)), from=min(dataX), to=max(dataX), col="purple", add=TRUE)
-    
+
     yEst <- a*sin(dataX) + b*cos(dataX)
     err <- err - yEst
   }
-  
+
   # calculation of final variables
   MSE <- mean(err^2)
   varY <- var(dataY) * (n-1)/n
   R2 <- 1 - (MSE / varY)
-  
-  result = list("MSE" = MSE, "Variance of Y" = varY, "R^2" = R2, "Plot" = p, "Curve" = curve)
+
+  result = list("Model" = model, "MSE" = MSE, "VarianceY" = varY, "R^2" = R2, "Plot" = p, "Curve" = curve)
   return(result)
+}
+
+obtain_function_from_model <- function(model) {
+  intercept <- round(model$coefficients[1],5)
+  xslope <- round(model$coefficients[2],5)
+
+  if (xslope >= 0) {
+    print(paste(intercept, "+", xslope, "x"))
+  } else {
+    print(paste(intercept, " ", xslope, "x"))
+  }
+
 }
