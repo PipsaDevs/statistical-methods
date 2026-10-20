@@ -4,17 +4,17 @@
 \alias{time_series}
 \title{Classical Time Series Decomposition & Trend Fitting}
 \usage{
-time_series(arr, initialyear, freq)
+time_series(data_array, initial_year, freq)
 }
 \arguments{
+\item{freq}{Seasonal frequency (e.g., 4 for quarterly, 12 for monthly).}
+
 \item{arr}{Numeric vector of time series observations.}
 
 \item{initialyear}{Starting year for the time series.}
-
-\item{freq}{Seasonal frequency (e.g., 4 for quarterly, 12 for monthly).}
 }
 \value{
-Displays plots and prints trend equation to console.
+Displays plots and prints trend equation to console. Also returns a list containing the original time series, trend, seasonal indices, deseasonalized data, and trend model.
 }
 \description{
 Performs seasonal decomposition using moving averages and fits a linear trend to deseasonalized data.
