@@ -162,3 +162,27 @@ obtain_function_from_model <- function(model) {
   }
 
 }
+
+#' Deflate Nominal Monetary Series to Real Values
+#'
+#' Converts nominal monetary observations into real base-year values using CPI index figures.
+#'
+#' @param nominal_values Numeric vector of observed nominal figures across time periods.
+#' @param cpi_index Numeric vector of Consumer Price Index values (base year = 100).
+#' @return A data frame containing Nominal Values, CPI, Real Values, and Purchasing Power factor.
+calculate_deflation <- function(nominal_values, cpi_index) {
+  if (length(nominal_values) != length(cpi_index)) {
+    stop("Nominal values vector and CPI index vector must have the same length.")
+  }
+
+  cpi_proportion <- cpi_index / 100
+  real_values <- nominal_values / cpi_proportion
+  purchasing_power_factor <- 1 / cpi_proportion
+
+  return(data.frame(
+    Nominal = nominal_values,
+    CPI = cpi_index,
+    Real_Value = real_values,
+    Purchasing_Power = purchasing_power_factor
+  ))
+}
