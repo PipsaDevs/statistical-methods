@@ -1,21 +1,43 @@
 # Basic stuff
 
 
-# Absolute frequency (count how many times x number appears in array)
+#' Absolute frequency
+#' 
+#' @param x The raw vector containing all data
+#' @return A vector containing the absolute frequency of each thing
+#' @export
 absolute_freq <- function(x) table(x)
 
-# Mode (warning: Mode only returns the type of object passed as an argument)
+#' Statistical mode
+#' 
+#' Computes the mode out of a vector of data because the R function Mode() returns the type of object
+#' 
+#' @param x The raw data as a vector
+#' @return The mode
+#' @export
 stat_mode <- function(x) {
   tbl <- absolute_freq(x)
   as.numeric(names(tbl)[tbl == max(tbl)])
 }
 
-# How many times a number appears in an array
+#' Absolute frequency of a number
+#' 
+#' Calculates the abs frequency of a number
+#' 
+#' @param x The raw data
+#' @param y The number to look for
+#' @return The amount of times y appears in x
+#' @export
+
 absolute_freq_of_number <- function(x, y) {
   length(which(x == y))
 }
 
-# Relative frequency (f_i = n_i / N)
+#' Relative frequency
+#' 
+#' @param x Raw data vector
+#' @return Table of relative frequencies
+#' @export
 relative_freq <- function(x) prop.table(table(x))
 
 # Relative frequency of a specific number
