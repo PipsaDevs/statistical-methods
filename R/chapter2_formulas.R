@@ -212,6 +212,7 @@ mom_cent <- function(values, r, s) {
 #'   - "e": Exponential (y = a * x^b)
 #'   - "i": Hyperbolic/Inverse (y = 1 / (a + bx))
 #'   - "q": Quadratic (y = ax^2 + bx + c)
+#'   - "t": Trigonometric (y = a·sin(x) + b·cos(x))
 #' @return A named list: MSE, Variance of Y, R^2, Plot, Curve.
 #' @examples
 #' x <- c(1, 2, 3, 4, 5)
@@ -281,6 +282,18 @@ modelFunc <- function(dataX, dataY, fitting) {
     yEst <- a*(dataX2)+(b*dataX)+c
     err <- err - yEst
   }
+  else if(fitting == "t") {
+    model <- lm(dataY ~ 0 + sin(dataX) + cos(dataX))
+    
+    a <- coef(model)[1]
+    b <- coef(model)[2]
+    
+    curve <- curve((a*sin(x) + b*cos(x)), from=min(dataX), to=max(dataX), col="purple", add=TRUE)
+    
+    yEst <- a*sin(dataX) + b*cos(dataX)
+    err <- err - yEst
+  }
+  
   # calculation of final variables
   MSE <- mean(err^2)
   varY <- var(dataY) * (n-1)/n
