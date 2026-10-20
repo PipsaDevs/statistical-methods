@@ -1,4 +1,13 @@
-# Get the moving average of an array with a specific order
+#' Moving Average of a Time Series
+#'
+#' Computes the centered moving average of an array with a specific order.
+#'
+#' @param arr Numeric vector or time series.
+#' @param order Integer order of the moving average.
+#' @return A filtered time series object.
+#' @examples
+#' moving_average(c(10, 12, 15, 14, 18, 20, 22), order = 3)
+#' @export
 moving_average <- function(arr, order){
   
   tmparr <- c(1)
@@ -16,34 +25,36 @@ moving_average <- function(arr, order){
   
 }
 
+#' Classical Time Series Decomposition & Trend Fitting
+#'
+#' Performs seasonal decomposition using moving averages and fits a linear trend to deseasonalized data.
+#'
+#' @param arr Numeric vector of time series observations.
+#' @param initialyear Starting year for the time series.
+#' @param freq Seasonal frequency (e.g., 4 for quarterly, 12 for monthly).
+#' @return Displays plots and prints trend equation to console.
+#' @examples
+#' data_vals <- c(10, 15, 8, 20, 12, 18, 9, 25)
+#' time_series(data_vals, initialyear = 2020, freq = 4)
+#' @export
 time_series <- function(arr, initialyear, freq){
   
   uk <- ts ( arr , start = c (initialyear , 1) , frequency = freq)
-  # print(qrt_car_sales)
   
   tend <- moving_average(uk, freq)
   
   plot (uk)
-  #lines ( tend , col = "purple")
   
   est_aleM <- uk / tend
-  # print("est_aleM:  )
-  # print(est_aleM)
   
   est1M <- colMeans ( matrix ( est_aleM , ncol =freq , byrow = T ) ,
                       na.rm = T )
   
   estM <- est1M / mean ( est1M )
-  # print("estM:")
-  # print(estM)
   
   aleM <- est_aleM / estM
-  # print("aleM:")
-  # print(aleM)
   
   desestM <- uk / estM
-  # print("Desest M: ")
-  # print(desestM)
   
   xx <- seq_along(uk)
   
@@ -61,7 +72,16 @@ time_series <- function(arr, initialyear, freq){
   lines ( regL , col =6)
 }
 
-# Function that calculates autocorrelation for a frequency n
+#' Autocorrelation for a Specific Lag
+#'
+#' Calculates the correlation between a time series and itself lagged by n periods.
+#'
+#' @param data Numeric vector of observations.
+#' @param n Integer lag/frequency.
+#' @return Numeric correlation value.
+#' @examples
+#' autoCorrel(c(1, 3, 2, 5, 4, 7, 6, 9), n = 2)
+#' @export
 autoCorrel <- function ( data , n ) {
   # Remove the last n data points
   xx1 <- head ( data , -n )
@@ -71,8 +91,15 @@ autoCorrel <- function ( data , n ) {
   sqrt ( summary ( lm ( xx1 ~ xx2 )) $ r.squared )
 }
 
-# The frequency searched will be the one that has the highest correlation.
-# For that, we check which one the highest is between 1 and 12 and that will be the answer.
+#' Find Dominant Frequency by Maximum Autocorrelation
+#'
+#' Checks autocorrelation for lags from 1 up to 12 (or length-1) to find the frequency with the highest correlation.
+#'
+#' @param data Numeric vector of time series observations.
+#' @return Prints the highest correlation frequency to console.
+#' @examples
+#' calculateCorrel(c(1, 4, 2, 8, 2, 4, 2, 8, 3, 5, 2, 9))
+#' @export
 calculateCorrel <- function(data) {
   
   biggest <- 0
