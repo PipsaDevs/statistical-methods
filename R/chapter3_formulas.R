@@ -9,20 +9,20 @@
 #' moving_average(c(10, 12, 15, 14, 18, 20, 22), order = 3)
 #' @export
 moving_average <- function(arr, order){
-  
+
   tmparr <- c(1)
-  
+
   for (i in 1:order){
     tmparr[i] = 1
   }
-  
+
   if (order %% 2 == 0){
     tmparr[1] = 0.5
     tmparr[order+1] = 0.5
   }
-  
+
   stats::filter(arr, tmparr / order)
-  
+
 }
 
 #' Classical Time Series Decomposition & Trend Fitting
@@ -38,36 +38,35 @@ moving_average <- function(arr, order){
 #' time_series(data_vals, initialyear = 2020, freq = 4)
 #' @export
 time_series <- function(arr, initialyear, freq){
-  
+
   uk <- ts ( arr , start = c (initialyear , 1) , frequency = freq)
-  
+
   tend <- moving_average(uk, freq)
-  
+
   plot (uk)
-  
+
   est_aleM <- uk / tend
-  
+
   est1M <- colMeans ( matrix ( est_aleM , ncol =freq , byrow = T ) ,
                       na.rm = T )
-  
+
   estM <- est1M / mean ( est1M )
-  
+
   aleM <- est_aleM / estM
-  
+
   desestM <- uk / estM
-  
+
   xx <- seq_along(uk)
-  
+
   model <- lm ( desestM ~ xx )
-  
+
   regL <- ts ( predict.lm ( model ) , start = c (initialyear , 1) ,
                frequency =freq)
-  
+
   print("Intercept line:")
-  intercept <- round(model$coefficients[1],5)
-  xslope <- round(model$coefficients[2],5)
-  print(paste(intercept, " ", xslope, "x"))
-  
+
+  obtain_function_from_model(model)
+
   plot ( desestM )
   lines ( regL , col =6)
 }
@@ -101,25 +100,46 @@ autoCorrel <- function ( data , n ) {
 #' calculateCorrel(c(1, 4, 2, 8, 2, 4, 2, 8, 3, 5, 2, 9))
 #' @export
 calculateCorrel <- function(data) {
-  
+
   biggest <- 0
   bigfreq <- 1
   top <- 12
-  
+
   if (length(data) < 12){
     top <- length(data)-1
   }
-  
+
   for (i in 1:top){
     current <- autoCorrel(data, i)
-    
+
     if (current > biggest){
       biggest = current
       bigfreq = i
     }
-    
+
   }
-  
+
   print(paste("The frequency will be: ", bigfreq, ", with correlation: ", round(biggest, 5)))
-  
+
+}
+
+#' Obtain Function from Model Coefficients
+#'
+#' Creates a string from a linear model's coefficients in the form "intercept + slope * x".
+#'
+#' @param x A model (obtained from lm())
+#' @return A string representation of the linear function.
+#' @examples
+#' obtain_function_from_model(lm(c(1, 2, 3) ~ c(4, 5, 6)))
+#' @export
+obtain_function_from_model <- function(model) {
+  intercept <- round(model$coefficients[1],5)
+  xslope <- round(model$coefficients[2],5)
+
+  if (xslope >= 0) {
+    print(paste(intercept, "+", xslope, "x"))
+  } else {
+    print(paste(intercept, " ", xslope, "x"))
+  }
+
 }
