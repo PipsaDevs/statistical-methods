@@ -17,13 +17,14 @@ modelFunc(dataX, dataY, fitting)
 \item "e": Exponential (y = a * x^b)
 \item "i": Hyperbolic/Inverse (y = 1 / (a + bx))
 \item "q": Quadratic (y = ax^2 + bx + c)
+\item "t": Trigonometric (y = a·sin(x) + b·cos(x))
 }}
 }
 \value{
-A named list: MSE, Variance of Y, R^2, Plot, Curve.
+A named list: Model, MSE, Variance of Y, R^2, Plot, Curve.
 }
 \description{
-Fits a mathematical model to bivariate data (X, Y) and calculates MSE, Var(Y), and R^2.
+Fits a mathematical model to bivariate data (X, Y) and calculates Model, MSE, Var(Y), and R^2.
 }
 \examples{
 x <- c(1, 2, 3, 4, 5)
