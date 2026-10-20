@@ -18,8 +18,6 @@ moving_average <- function(arr, order){
 
 time_series <- function(arr, initialyear, freq){
   
-  library(tidyverse)
-  
   uk <- ts ( arr , start = c (initialyear , 1) , frequency = freq)
   # print(qrt_car_sales)
   
