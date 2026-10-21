@@ -14,10 +14,15 @@ time_series(data_array, initial_year, freq)
 \item{initialyear}{Starting year for the time series.}
 }
 \value{
-Displays plots and prints trend equation to console. Also returns a list containing the original time series, trend, seasonal indices, deseasonalized data, and trend model.
+Displays plots and prints trend equation to console.
+Also returns a list containing
+the original time series, trend, seasonal indices,
+deseasonalized data, and trend model.
 }
 \description{
-Performs seasonal decomposition using moving averages and fits a linear trend to deseasonalized data.
+Performs seasonal decomposition
+using moving averages
+and fits a linear trend to deseasonalized data.
 }
 \examples{
 data_vals <- c(10, 15, 8, 20, 12, 18, 9, 25)

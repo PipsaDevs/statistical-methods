@@ -7,7 +7,8 @@
 mom_cent(values, r, s)
 }
 \arguments{
-\item{values}{A matrix/table of joint frequencies with numeric row and column names.}
+\item{values}{A matrix/table of joint frequencies
+with numeric row and column names.}
 
 \item{r}{Integer order for X.}
 
@@ -17,5 +18,6 @@ mom_cent(values, r, s)
 Numeric central moment value.
 }
 \description{
-Computes the bivariate central moment of order (r, s) about means of row/col names.
+Computes the bivariate central moment
+of order (r, s) about means of row/col names.
 }

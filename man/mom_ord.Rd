@@ -7,7 +7,8 @@
 mom_ord(values, r, s, a, b)
 }
 \arguments{
-\item{values}{A matrix/table of joint frequencies with numeric row and column names.}
+\item{values}{A matrix/table of joint frequencies
+with numeric row and column names.}
 
 \item{r}{Integer order for X.}
 

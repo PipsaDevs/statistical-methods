@@ -15,7 +15,8 @@ linear_correlation(x, y)
 Numeric correlation between -1 and 1.
 }
 \description{
-Computes the Pearson linear correlation coefficient: cov(X, Y) / (std_dev(X) * std_dev(Y)).
+Computes the Pearson linear correlation coefficient:
+cov(X, Y) / (std_dev(X) * std_dev(Y)).
 }
 \examples{
 linear_correlation(c(1, 2, 3, 4), c(2, 4, 6, 8))

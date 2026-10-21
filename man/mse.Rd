@@ -15,7 +15,9 @@ mse(x, p = mean(x))
 The mean squared error.
 }
 \description{
-Computes the mean squared error of a sample with respect to a point p (defaults to the mean).
+Computes the mean squared error
+of a sample with respect to a point p
+(defaults to the mean).
 }
 \examples{
 mse(c(1, 2, 3, 4, 5))

@@ -1,6 +1,5 @@
 # Basic stuff
 
-
 #' Absolute frequency
 #'
 #' Computes the absolute frequency table (counts) for a sample vector.
@@ -53,7 +52,8 @@ relative_freq <- function(x) prop.table(table(x))
 
 #' Relative frequency of a specific number
 #'
-#' Computes the relative frequency proportion (f_i = n_i / N) of a specific value.
+#' Computes the relative frequency proportion
+#' (f_i = n_i / N) of a specific value.
 #'
 #' @param x A vector of values.
 #' @param y The specific value whose relative frequency is to be found.
@@ -93,7 +93,9 @@ cum_relative_freq <- function(x) cumsum(prop.table(table(x)))
 
 #' Mean deviation w.r.t. a point
 #'
-#' Computes the mean absolute deviation of a sample with respect to a point p (defaults to the mean).
+#' Computes the mean absolute deviation
+#' of a sample with respect to a point p
+#' (defaults to the mean).
 #'
 #' @param x A numeric vector.
 #' @param p A reference numeric value (defaults to mean(x)).
@@ -107,7 +109,9 @@ mean_deviation <- function(x, p = mean(x)) {
 
 #' Mean Squared Error
 #'
-#' Computes the mean squared error of a sample with respect to a point p (defaults to the mean).
+#' Computes the mean squared error
+#' of a sample with respect to a point p
+#' (defaults to the mean).
 #'
 #' @param x A numeric vector.
 #' @param p A reference numeric value (defaults to mean(x)).
@@ -175,7 +179,8 @@ cv <- function(x) {
 
 #' Moment of order r w.r.t. constant c
 #'
-#' Computes the sample moment of order r with respect to constant c: mean((x - c)^r).
+#' Computes the sample moment of order
+#' r with respect to constant c: mean((x - c)^r).
 #'
 #' @param x A numeric vector.
 #' @param r Integer order of the moment.
@@ -202,7 +207,8 @@ ord_moment <- function(x, r) moment(x, r, 0)
 
 #' Central moment
 #'
-#' Computes the central moment of order r (w.r.t. the mean): m_r = mean((x - mean)^r).
+#' Computes the central moment of order r
+#'  (w.r.t. the mean): m_r = mean((x - mean)^r).
 #'
 #' @param x A numeric vector.
 #' @param r Integer order of the moment.
@@ -221,7 +227,7 @@ cnt_moment <- function(x, r) moment(x, r, mean(x))
 #' @examples
 #' p_skewness(c(1, 2, 2, 3, 4))
 #' @export
-p_skewness <- function(x) (mean(x) - stat_mode(x))/std_deviation(x)
+p_skewness <- function(x) (mean(x) - stat_mode(x)) / std_deviation(x)
 
 #' Fisher's skewness coefficient
 #'
@@ -233,7 +239,7 @@ p_skewness <- function(x) (mean(x) - stat_mode(x))/std_deviation(x)
 #' f_skewness(c(1, 2, 3, 4, 5))
 #' @export
 f_skewness <- function(x) {
-  cnt_moment(x, 3)/(std_deviation(x)^3)
+  cnt_moment(x, 3) / (std_deviation(x)^3)
 }
 
 #' Fisher's kurtosis coefficient
@@ -246,7 +252,7 @@ f_skewness <- function(x) {
 #' kurtosis(c(1, 2, 3, 4, 5))
 #' @export
 kurtosis <- function(x) {
-  g <- cnt_moment(x, 4)/(std_deviation(x)^4)
+  g <- cnt_moment(x, 4) / (std_deviation(x)^4)
   g - 3
 }
 
@@ -258,95 +264,31 @@ kurtosis <- function(x) {
 #' detect_outliers(c(1, 2, 3, 4, 5, 100, 200))
 #' @export
 detect_outliers <- function(x) {
-    q1 <- quantile(x, 0.25)
-    q3 <- quantile(x, 0.75)
-    iqr <- q3 - q1
+  q1 <- quantile(x, 0.25)
+  q3 <- quantile(x, 0.75)
+  iqr <- q3 - q1
 
-    mod_lower <- q1 - 1.5 * iqr
-    mod_upper <- q3 + 1.5 * iqr
-    ext_lower <- q1 - 3.0 * iqr
-    ext_upper <- q3 + 3.0 * iqr
+  mod_lower <- q1 - 1.5 * iqr
+  mod_upper <- q3 + 1.5 * iqr
+  ext_lower <- q1 - 3.0 * iqr
+  ext_upper <- q3 + 3.0 * iqr
 
-    mod_outliers <- x[x < mod_lower | x > mod_upper]
-    ext_outliers <- x[x < ext_lower | x > ext_upper]
+  mod_outliers <- x[x < mod_lower | x > mod_upper]
+  ext_outliers <- x[x < ext_lower | x > ext_upper]
 
-    return(list(
-        iqr = iqr,
-        moderate_bounds = c(lower = mod_lower, upper = mod_upper),
-        extreme_bounds = c(lower = ext_lower, upper = ext_upper),
-        moderate_outliers = mod_outliers,
-        extreme_outliers = ext_outliers
-    ))
-}
-
-#' Compute Quantile for Discrete or Grouped Continuous Data
-#'
-#' @param x Numeric vector of ordered raw data OR interval lower bounds if grouped.
-#' @param c Fraction between 0 and 1 representing the quantile (e.g., 0.25 for Q1).
-#' @param grouped Logical; set TRUE if providing grouped interval data.
-#' @param N_prev Previous cumulative frequency for the quantile interval (if grouped).
-#' @param n_i Absolute frequency of the quantile interval (if grouped).
-#' @param a_i Width of the quantile interval (if grouped).
-#' @param L_prev Lower limit of the quantile interval (if grouped).
-#' @param N Total sample size.
-#' @return The calculated quantile value.
-calculate_quantile <- function(x, c, grouped = FALSE, L_prev = NULL, N = NULL, N_prev = NULL, n_i = NULL, a_i = NULL) {
-  if (!grouped) {
-    x_sorted <- sort(x)
-    n_obs <- length(x_sorted)
-    prod_val <- c * n_obs
-    E <- floor(prod_val)
-    D <- prod_val - E
-
-    if (D != 0) {
-      q_val <- x_sorted[E + 1]
-    } else {
-      q_val <- (x_sorted[E] + x_sorted[E + 1]) / 2
-    }
-    return(q_val)
-  } else {
-    # Continuous grouped formula: L_{i-1} + ((c*N - N_{i-1})/n_i) * a_i
-    q_val <- L_prev + ((c * N - N_prev) / n_i) * a_i
-    return(q_val)
-  }
-}
-
-#' Calculate Specific Percentile P_k
-#'
-#' @param x Numeric vector of raw observations.
-#' @param k Percentile rank to compute (integer between 1 and 99).
-#' @return The percentile value P_k.
-calculate_percentile <- function(x, k) {
-  if (k < 1 || k > 99) {
-    stop("Percentile k must be an integer between 1 and 99.")
-  }
-
-  c_val <- k / 100
-  p_k <- calculate_quantile(x, c = c_val, grouped = FALSE)
-
-  return(p_k)
-}
-
-#' Compute Quadratic Mean (Root Mean Square - RMS)
-#'
-#' @param x Numeric vector of values or class marks.
-#' @param n Optional numeric vector of absolute frequencies (for grouped data).
-#' @return The calculated quadratic mean (RMS).
-calculate_rms <- function(x, n = NULL) {
-  if (is.null(n)) {
-    rms_val <- sqrt(mean(x^2))
-  } else {
-    N <- sum(n)
-    rms_val <- sqrt(sum(n * (x^2)) / N)
-  }
-
-  return(rms_val)
+  list(
+    iqr = iqr,
+    moderate_bounds = c(lower = mod_lower, upper = mod_upper),
+    extreme_bounds = c(lower = ext_lower, upper = ext_upper),
+    moderate_outliers = mod_outliers,
+    extreme_outliers = ext_outliers
+  )
 }
 
 #' Root mean square (rms)
-#' 
+#'
 #' Computes the root mean square AKA the quadratic mean
-#' 
+#'
 #' @param x Raw data vector
 #' @return Do i really need to explain this
 #' @examples

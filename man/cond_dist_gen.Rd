@@ -9,7 +9,8 @@ cond_dist_gen(values, condition_var = c("x", "y"), value)
 \arguments{
 \item{values}{A contingency table or matrix with row/column names.}
 
-\item{condition_var}{Either "x" (conditioning on row value) or "y" (conditioning on col value).}
+\item{condition_var}{Either "x" (conditioning on row value)
+or "y" (conditioning on col value).}
 
 \item{value}{The specific value conditioned on (character or numeric).}
 }
@@ -17,7 +18,8 @@ cond_dist_gen(values, condition_var = c("x", "y"), value)
 A data.frame with counts and relative frequencies.
 }
 \description{
-Computes the conditional distribution (absolute and relative frequencies) given a condition variable.
+Computes the conditional distribution
+(absolute and relative frequencies) given a condition variable.
 }
 \examples{
 tbl <- table(c(1, 1, 2, 2), c("A", "B", "A", "B"))
