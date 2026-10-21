@@ -273,7 +273,7 @@ model_func <- function(data_x, data_y, fitting) {
       from = min(data_x), to = max(data_x), col = "green", add = TRUE
     )
 
-    y_est <- a * x^b
+    y_est <- a * data_x^b
     err <- err - y_est
   } else if (fitting == "i") {
     # Hyperbolic aka inverse
@@ -307,6 +307,7 @@ model_func <- function(data_x, data_y, fitting) {
     y_est <- a * (data_x2) + (b * data_x) + c
     err <- err - y_est
   } else if (fitting == "t") {
+    # TRIGONOMETRIC
     model <- lm(data_y ~ 0 + sin(data_x) + cos(data_x))
 
     a <- coef(model)[1]
@@ -330,7 +331,7 @@ model_func <- function(data_x, data_y, fitting) {
     "Model" = model,
     "mse" = mse,
     "VarianceY" = var_y,
-    "R^2" = r2,
+    "R2" = r2,
     "Plot" = p,
     "Curve" = curve
   )
