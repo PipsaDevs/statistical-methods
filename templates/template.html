@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>statmethods — Offline Exam Documentation</title>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem("statmethods-theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", saved || (prefersDark ? "dark" : "light"));
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    /* {{CSS}} */
+  </style>
+</head>
+<body>
+  <aside>
+    <div class="brand">
+      <div class="brand-info">
+        <h1>statmethods</h1>
+        <p>Offline Exam Reference</p>
+      </div>
+      <button id="themeToggle" class="theme-toggle-btn" type="button">
+        <span id="themeToggleLabel">Dark</span>
+      </button>
+    </div>
+    <div class="search-box">
+      <div class="search-wrapper">
+        <input type="text" id="filterInput" placeholder="Filter functions (Ctrl+K, /)..." oninput="filterList()">
+        <button id="clearSearch" class="search-clear" onclick="clearSearch()">✕</button>
+      </div>
+    </div>
+    <div class="nav-list">
+      <!-- {{NAV}} -->
+    </div>
+  </aside>
+  <main id="mainContent">
+    <div class="header-banner">
+      <h2>statmethods Function Manual (Offline)</h2>
+      <p>Complete offline reference organized by source file.</p>
+    </div>
+    <div class="file-pills-bar">
+      <span style="font-weight:700; font-size:0.8rem; color:var(--text-muted);">Jump to file:</span>
+      <!-- {{PILLS}} -->
+    </div>
+    <!-- {{CONTENT}} -->
+    <div id="noResults" class="no-results">
+      <h3>No matching functions found</h3>
+    </div>
+  </main>
+  <script>
+    /* {{JS}} */
+  </script>
+</body>
+</html>
