@@ -13,18 +13,18 @@
 #' bundle(linear_correlation)
 #' }
 #' @export
-bundle <- function(fn, copy = TRUE) {
+bundle <- function(fn, copy = TRUE, env = parent.frame()) {
   fn_expr <- substitute(fn)
   fn_name <- if (is.character(fn_expr)) fn_expr else deparse(fn_expr)
 
-  if (!exists(fn_name, envir = .GlobalEnv, mode = "function")) {
+  if (!exists(fn_name, envir = env, mode = "function")) {
     stop(paste("Function", fn_name, "not found in environment!"))
   }
 
   # Identify all custom functions defined in the global environment
-  all_funcs <- ls(envir = .GlobalEnv)
+  all_funcs <- ls(envir = env)
   all_funcs <- all_funcs[
-    sapply(all_funcs, function(x) is.function(get(x, envir = .GlobalEnv)))
+    sapply(all_funcs, function(x) is.function(get(x, envir = env)))
   ]
   all_funcs <- setdiff(all_funcs, c("bundle"))
 
@@ -34,7 +34,7 @@ bundle <- function(fn, copy = TRUE) {
       return(character())
     }
     visited <- c(visited, name)
-    f <- get(name, envir = .GlobalEnv)
+    f <- get(name, envir = env)
     symbols <- all.names(body(f))
     deps <- intersect(symbols, all_funcs)
     deps <- setdiff(deps, name)
@@ -53,7 +53,7 @@ bundle <- function(fn, copy = TRUE) {
   # Format each function definition
   code_blocks <- character()
   for (f in ordered_deps) {
-    f_obj <- get(f, envir = .GlobalEnv)
+    f_obj <- get(f, envir = env)
     code_lines <- deparse(f_obj)
     code_lines[1] <- paste0(f, " <- ", code_lines[1])
     code_blocks <- c(code_blocks, paste(code_lines, collapse = "\n"))
