@@ -52,7 +52,8 @@ relative_freq <- function(x) prop.table(table(x))
 
 #' Relative frequency of a specific number
 #'
-#' Computes the relative frequency proportion (f_i = n_i / N) of a specific value.
+#' Computes the relative frequency proportion
+#' (f_i = n_i / N) of a specific value.
 #'
 #' @param x A vector of values.
 #' @param y The specific value whose relative frequency is to be found.
@@ -92,7 +93,9 @@ cum_relative_freq <- function(x) cumsum(prop.table(table(x)))
 
 #' Mean deviation w.r.t. a point
 #'
-#' Computes the mean absolute deviation of a sample with respect to a point p (defaults to the mean).
+#' Computes the mean absolute deviation
+#' of a sample with respect to a point p
+#' (defaults to the mean).
 #'
 #' @param x A numeric vector.
 #' @param p A reference numeric value (defaults to mean(x)).
@@ -106,7 +109,9 @@ mean_deviation <- function(x, p = mean(x)) {
 
 #' Mean Squared Error
 #'
-#' Computes the mean squared error of a sample with respect to a point p (defaults to the mean).
+#' Computes the mean squared error
+#' of a sample with respect to a point p
+#' (defaults to the mean).
 #'
 #' @param x A numeric vector.
 #' @param p A reference numeric value (defaults to mean(x)).
@@ -174,7 +179,8 @@ cv <- function(x) {
 
 #' Moment of order r w.r.t. constant c
 #'
-#' Computes the sample moment of order r with respect to constant c: mean((x - c)^r).
+#' Computes the sample moment of order
+#' r with respect to constant c: mean((x - c)^r).
 #'
 #' @param x A numeric vector.
 #' @param r Integer order of the moment.
@@ -270,13 +276,13 @@ detect_outliers <- function(x) {
   mod_outliers <- x[x < mod_lower | x > mod_upper]
   ext_outliers <- x[x < ext_lower | x > ext_upper]
 
-  return(list(
+  list(
     iqr = iqr,
     moderate_bounds = c(lower = mod_lower, upper = mod_upper),
     extreme_bounds = c(lower = ext_lower, upper = ext_upper),
     moderate_outliers = mod_outliers,
     extreme_outliers = ext_outliers
-  ))
+  )
 }
 
 #' Root mean square (rms)
