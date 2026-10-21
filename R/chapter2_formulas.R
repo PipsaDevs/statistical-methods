@@ -1,6 +1,8 @@
 #' Matrix / Vector to Contingency Table
 #'
-#' Converts a raw vector into a contingency table by row with a specified number of rows.
+#' Converts a raw vector
+#' into a contingency table by row
+#' with a specified number of rows.
 #'
 #' @param x A vector of table cell counts.
 #' @param NRows Integer number of rows for the matrix.
@@ -28,7 +30,8 @@ tableFromVariables <- function(x, y) {
 
 #' Reconstruct Observation Vectors from Contingency Table
 #'
-#' Expands a contingency table back into individual observation vectors (x and y).
+#' Expands a contingency table back into
+#' individual observation vectors (x and y).
 #'
 #' @param tbl A contingency table.
 #' @return A data.frame with two columns: `x` and `y`.
@@ -83,7 +86,8 @@ marginalY <- function(x, y) {
 
 #' Test for Statistical Independence
 #'
-#' Checks whether two variables X and Y are statistically independent (f_ij == f_i * f_j).
+#' Checks whether two variables X and Y
+#' are statistically independent (f_ij == f_i * f_j).
 #'
 #' @param x A vector for variable X.
 #' @param y A vector for variable Y.
