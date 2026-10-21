@@ -279,38 +279,6 @@ detect_outliers <- function(x) {
     ))
 }
 
-#' Compute Quantile for Discrete or Grouped Continuous Data
-#'
-#' @param x Numeric vector of ordered raw data OR interval lower bounds if grouped.
-#' @param c Fraction between 0 and 1 representing the quantile (e.g., 0.25 for Q1).
-#' @param grouped Logical; set TRUE if providing grouped interval data.
-#' @param N_prev Previous cumulative frequency for the quantile interval (if grouped).
-#' @param n_i Absolute frequency of the quantile interval (if grouped).
-#' @param a_i Width of the quantile interval (if grouped).
-#' @param L_prev Lower limit of the quantile interval (if grouped).
-#' @param N Total sample size.
-#' @return The calculated quantile value.
-calculate_quantile <- function(x, c, grouped = FALSE, L_prev = NULL, N = NULL, N_prev = NULL, n_i = NULL, a_i = NULL) {
-  if (!grouped) {
-    x_sorted <- sort(x)
-    n_obs <- length(x_sorted)
-    prod_val <- c * n_obs
-    E <- floor(prod_val)
-    D <- prod_val - E
-
-    if (D != 0) {
-      q_val <- x_sorted[E + 1]
-    } else {
-      q_val <- (x_sorted[E] + x_sorted[E + 1]) / 2
-    }
-    return(q_val)
-  } else {
-    # Continuous grouped formula: L_{i-1} + ((c*N - N_{i-1})/n_i) * a_i
-    q_val <- L_prev + ((c * N - N_prev) / n_i) * a_i
-    return(q_val)
-  }
-}
-
 #' Calculate Specific Percentile P_k
 #'
 #' @param x Numeric vector of raw observations.
@@ -344,9 +312,9 @@ calculate_rms <- function(x, n = NULL) {
 }
 
 #' Root mean square (rms)
-#' 
+#'
 #' Computes the root mean square AKA the quadratic mean
-#' 
+#'
 #' @param x Raw data vector
 #' @return Do i really need to explain this
 #' @examples
