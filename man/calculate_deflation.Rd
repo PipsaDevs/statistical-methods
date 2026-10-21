@@ -7,13 +7,17 @@
 calculate_deflation(nominal_values, cpi_index)
 }
 \arguments{
-\item{nominal_values}{Numeric vector of observed nominal figures across time periods.}
+\item{nominal_values}{Numeric vector of
+observed nominal figures across time periods.}
 
-\item{cpi_index}{Numeric vector of Consumer Price Index values (base year = 100).}
+\item{cpi_index}{Numeric vector of
+Consumer Price Index values (base year = 100).}
 }
 \value{
-A data frame containing Nominal Values, CPI, Real Values, and Purchasing Power factor.
+A data frame containing
+Nominal Values, CPI, Real Values, and Purchasing Power factor.
 }
 \description{
-Converts nominal monetary observations into real base-year values using CPI index figures.
+Converts nominal monetary observations
+into real base-year values using CPI index figures.
 }

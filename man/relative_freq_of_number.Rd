@@ -15,7 +15,8 @@ relative_freq_of_number(x, y)
 A numeric proportion between 0 and 1.
 }
 \description{
-Computes the relative frequency proportion (f_i = n_i / N) of a specific value.
+Computes the relative frequency proportion
+(f_i = n_i / N) of a specific value.
 }
 \examples{
 relative_freq_of_number(c(1, 2, 2, 3, 4), 2)

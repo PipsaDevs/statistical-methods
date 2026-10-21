@@ -15,7 +15,9 @@ mean_deviation(x, p = mean(x))
 The mean absolute deviation.
 }
 \description{
-Computes the mean absolute deviation of a sample with respect to a point p (defaults to the mean).
+Computes the mean absolute deviation
+of a sample with respect to a point p
+(defaults to the mean).
 }
 \examples{
 mean_deviation(c(1, 2, 3, 4, 5))
