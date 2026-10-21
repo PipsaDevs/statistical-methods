@@ -6,6 +6,7 @@
 #'
 #' @param fn Function name (as a bare symbol or a character string).
 #' @param copy Logical, whether to automatically copy to the clipboard.
+#' @param env The environment in which the function is located
 #' @return Invisibly returns the concatenated code string.
 #' @examples
 #' \dontrun{
@@ -39,15 +40,22 @@ bundle <- function(fn, copy = TRUE, env = parent.frame()) {
 
   target <- find_fn(fn_name)
   if (is.null(target)) {
-    stop("Function '", fn_name, "' was not found")
+    stop("Function '", fn_name, "' was not found", call. = FALSE)
   }
 
   # Identify all custom functions defined in the global environment
-  all_funcs <- ls(envir = env)
+  all_funcs <- unique(c(
+    ls(envir = env, all.names = TRUE),
+    ls(envir = environment(bundle))
+  ))
   all_funcs <- all_funcs[
-    sapply(all_funcs, function(x) is.function(get(x, envir = env)))
+    vapply(
+      all_funcs,
+      function(name) !is.null(find_fn(name)),
+      logical(1)
+    )
   ]
-  all_funcs <- setdiff(all_funcs, c("bundle"))
+  all_funcs <- setdiff(all_funcs, "bundle")
 
   # Recursive dependency collector
   get_deps <- function(name, visited = character()) {
@@ -55,7 +63,10 @@ bundle <- function(fn, copy = TRUE, env = parent.frame()) {
       return(character())
     }
     visited <- c(visited, name)
-    f <- get(name, envir = env)
+    f <- find_fn(name)
+    if (is.null(f)) {
+      return(character())
+    }
     symbols <- all.names(body(f))
     deps <- intersect(symbols, all_funcs)
     deps <- setdiff(deps, name)
@@ -74,7 +85,7 @@ bundle <- function(fn, copy = TRUE, env = parent.frame()) {
   # Format each function definition
   code_blocks <- character()
   for (f in ordered_deps) {
-    f_obj <- get(f, envir = env)
+    f_obj <- find_fn(f)
     code_lines <- deparse(f_obj)
     code_lines[1] <- paste0(f, " <- ", code_lines[1])
     code_blocks <- c(code_blocks, paste(code_lines, collapse = "\n"))
