@@ -17,8 +17,29 @@ bundle <- function(fn, copy = TRUE, env = parent.frame()) {
   fn_expr <- substitute(fn)
   fn_name <- if (is.character(fn_expr)) fn_expr else as.character(fn_expr)
 
-  if (!exists(fn_name, envir = env, mode = "function")) {
-    stop(paste("Function", fn_name, "not found in environment!"))
+  find_fn <- function(name) {
+    caller_fn <- get0(
+      name,
+      envir = env,
+      mode = "function",
+      inherits = TRUE,
+      ifnotfound = NULL
+    )
+    if (!is.null(caller_fn)) {
+      return(caller_fn)
+    }
+    get0(
+      name,
+      envir = environment(bundle),
+      mode = "function",
+      inherits = FALSE,
+      ifnotfound = NULL
+    )
+  }
+
+  target <- find_fn(fn_name)
+  if (is.null(target)) {
+    stop("Function '", fn_name, "' was not found")
   }
 
   # Identify all custom functions defined in the global environment
