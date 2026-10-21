@@ -220,7 +220,7 @@ cnt_moment <- function(x, r) moment(x, r, mean(x))
 #' @examples
 #' p_skewness(c(1, 2, 2, 3, 4))
 #' @export
-p_skewness <- function(x) (mean(x) - stat_mode(x))/std_deviation(x)
+p_skewness <- function(x) (mean(x) - stat_mode(x)) / std_deviation(x)
 
 #' Fisher's skewness coefficient
 #'
@@ -232,7 +232,7 @@ p_skewness <- function(x) (mean(x) - stat_mode(x))/std_deviation(x)
 #' f_skewness(c(1, 2, 3, 4, 5))
 #' @export
 f_skewness <- function(x) {
-  cnt_moment(x, 3)/(std_deviation(x)^3)
+  cnt_moment(x, 3) / (std_deviation(x)^3)
 }
 
 #' Fisher's kurtosis coefficient
@@ -245,7 +245,7 @@ f_skewness <- function(x) {
 #' kurtosis(c(1, 2, 3, 4, 5))
 #' @export
 kurtosis <- function(x) {
-  g <- cnt_moment(x, 4)/(std_deviation(x)^4)
+  g <- cnt_moment(x, 4) / (std_deviation(x)^4)
   g - 3
 }
 
@@ -257,25 +257,25 @@ kurtosis <- function(x) {
 #' detect_outliers(c(1, 2, 3, 4, 5, 100, 200))
 #' @export
 detect_outliers <- function(x) {
-    q1 <- quantile(x, 0.25)
-    q3 <- quantile(x, 0.75)
-    iqr <- q3 - q1
+  q1 <- quantile(x, 0.25)
+  q3 <- quantile(x, 0.75)
+  iqr <- q3 - q1
 
-    mod_lower <- q1 - 1.5 * iqr
-    mod_upper <- q3 + 1.5 * iqr
-    ext_lower <- q1 - 3.0 * iqr
-    ext_upper <- q3 + 3.0 * iqr
+  mod_lower <- q1 - 1.5 * iqr
+  mod_upper <- q3 + 1.5 * iqr
+  ext_lower <- q1 - 3.0 * iqr
+  ext_upper <- q3 + 3.0 * iqr
 
-    mod_outliers <- x[x < mod_lower | x > mod_upper]
-    ext_outliers <- x[x < ext_lower | x > ext_upper]
+  mod_outliers <- x[x < mod_lower | x > mod_upper]
+  ext_outliers <- x[x < ext_lower | x > ext_upper]
 
-    return(list(
-        iqr = iqr,
-        moderate_bounds = c(lower = mod_lower, upper = mod_upper),
-        extreme_bounds = c(lower = ext_lower, upper = ext_upper),
-        moderate_outliers = mod_outliers,
-        extreme_outliers = ext_outliers
-    ))
+  return(list(
+    iqr = iqr,
+    moderate_bounds = c(lower = mod_lower, upper = mod_upper),
+    extreme_bounds = c(lower = ext_lower, upper = ext_upper),
+    moderate_outliers = mod_outliers,
+    extreme_outliers = ext_outliers
+  ))
 }
 
 #' Root mean square (rms)

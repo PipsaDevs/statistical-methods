@@ -8,21 +8,19 @@
 #' @examples
 #' moving_average(c(10, 12, 15, 14, 18, 20, 22), order = 3)
 #' @export
-moving_average <- function(arr, order){
-
+moving_average <- function(arr, order) {
   tmparr <- c(1)
 
-  for (i in 1:order){
-    tmparr[i] = 1
+  for (i in 1:order) {
+    tmparr[i] <- 1
   }
 
-  if (order %% 2 == 0){
-    tmparr[1] = 0.5
-    tmparr[order+1] = 0.5
+  if (order %% 2 == 0) {
+    tmparr[1] <- 0.5
+    tmparr[order + 1] <- 0.5
   }
 
   stats::filter(arr, tmparr / order)
-
 }
 
 #' Classical Time Series Decomposition & Trend Fitting
@@ -38,7 +36,6 @@ moving_average <- function(arr, order){
 #' time_series(data_vals, initialyear = 2020, freq = 4)
 #' @export
 time_series <- function(data_array, initial_year, freq) {
-
   # time series data
   ts_data <- ts(data_array, start = c(initial_year, 1), frequency = freq)
 
@@ -78,16 +75,18 @@ time_series <- function(data_array, initial_year, freq) {
   obtain_function_from_model(trend_model)
   cat("----------------------------------\n\n")
 
-  plot(deseasonalized_data, main = "Deseasonalized Data with Trend Line",
-       ylab = "Deseasonalized Values", xlab = "Time")
+  plot(deseasonalized_data,
+    main = "Deseasonalized Data with Trend Line",
+    ylab = "Deseasonalized Values", xlab = "Time"
+  )
   lines(trend_line, col = 6, lwd = 2)
 
   list(
-      ts_data = ts_data,
-      trend = trend,
-      seasonal_indices = seasonal_indices,
-      deseasonalized_data = deseasonalized_data,
-      trend_model = trend_model
+    ts_data = ts_data,
+    trend = trend,
+    seasonal_indices = seasonal_indices,
+    deseasonalized_data = deseasonalized_data,
+    trend_model = trend_model
   )
 }
 #' Autocorrelation for a Specific Lag
@@ -100,13 +99,13 @@ time_series <- function(data_array, initial_year, freq) {
 #' @examples
 #' autoCorrel(c(1, 3, 2, 5, 4, 7, 6, 9), n = 2)
 #' @export
-autoCorrel <- function ( data , n ) {
+autoCorrel <- function(data, n) {
   # Remove the last n data points
-  xx1 <- head ( data , -n )
+  xx1 <- head(data, -n)
   # Remove the first n data points
-  xx2 <- tail ( data , -n )
+  xx2 <- tail(data, -n)
   # correlation
-  sqrt ( summary ( lm ( xx1 ~ xx2 )) $ r.squared )
+  sqrt(summary(lm(xx1 ~ xx2))$r.squared)
 }
 
 #' Find Dominant Frequency by Maximum Autocorrelation
@@ -119,27 +118,24 @@ autoCorrel <- function ( data , n ) {
 #' calculateCorrel(c(1, 4, 2, 8, 2, 4, 2, 8, 3, 5, 2, 9))
 #' @export
 calculateCorrel <- function(data) {
-
   biggest <- 0
   bigfreq <- 1
   top <- 12
 
-  if (length(data) < 12){
-    top <- length(data)-1
+  if (length(data) < 12) {
+    top <- length(data) - 1
   }
 
-  for (i in 1:top){
+  for (i in 1:top) {
     current <- autoCorrel(data, i)
 
-    if (current > biggest){
-      biggest = current
-      bigfreq = i
+    if (current > biggest) {
+      biggest <- current
+      bigfreq <- i
     }
-
   }
 
   print(paste("The frequency will be: ", bigfreq, ", with correlation: ", round(biggest, 5)))
-
 }
 
 #' Obtain Function from Model Coefficients
@@ -152,15 +148,14 @@ calculateCorrel <- function(data) {
 #' obtain_function_from_model(lm(c(1, 2, 3) ~ c(4, 5, 6)))
 #' @export
 obtain_function_from_model <- function(model) {
-  intercept <- round(model$coefficients[1],5)
-  xslope <- round(model$coefficients[2],5)
+  intercept <- round(model$coefficients[1], 5)
+  xslope <- round(model$coefficients[2], 5)
 
   if (xslope >= 0) {
     print(paste(intercept, "+", xslope, "x"))
   } else {
     print(paste(intercept, " ", xslope, "x"))
   }
-
 }
 
 #' Deflate Nominal Monetary Series to Real Values

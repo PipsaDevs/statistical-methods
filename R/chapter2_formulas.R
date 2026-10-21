@@ -49,7 +49,7 @@ tableToVectors <- function(tbl) {
     y_vec <- as.numeric(as.character(y_vec))
   }
 
-  return(data.frame(x = x_vec, y = y_vec)) #Returns data frame d. You can access d$x and d$y for the variable x vector and the variable y vector
+  return(data.frame(x = x_vec, y = y_vec)) # Returns data frame d. You can access d$x and d$y for the variable x vector and the variable y vector
 }
 
 #' Marginal Distribution of X
@@ -175,9 +175,9 @@ mom_ord <- function(values, r, s, a, b) {
   x <- as.numeric(rownames(values))
   y <- as.numeric(colnames(values))
   res <- 0
-  for(i in 1:length(x)) {
-    for(j in 1:length(y)){
-      res <- res + (((x[i] - a)^r)*((y[j] - b)^s)*values[i, j])
+  for (i in 1:length(x)) {
+    for (j in 1:length(y)) {
+      res <- res + (((x[i] - a)^r) * ((y[j] - b)^s) * values[i, j])
     }
   }
   return(res)
@@ -193,12 +193,13 @@ mom_ord <- function(values, r, s, a, b) {
 #' @return Numeric central moment value.
 #' @export
 mom_cent <- function(values, r, s) {
-  mom_ord(values,
-          r,
-          s,
-          mean(as.numeric(rownames(values))),
-          mean(as.numeric(colnames(values)))
-          )
+  mom_ord(
+    values,
+    r,
+    s,
+    mean(as.numeric(rownames(values))),
+    mean(as.numeric(colnames(values)))
+  )
 }
 
 #' Regression Curve Fitting & Evaluation
@@ -220,81 +221,81 @@ mom_cent <- function(values, r, s) {
 #' modelFunc(x, y, fitting = "l")
 #' @export
 modelFunc <- function(dataX, dataY, fitting) {
-    n <- length(dataY)
-    err <- dataY
+  n <- length(dataY)
+  err <- dataY
 
-    # preparing graphical info
-    p <- plot(dataX, dataY)
-    curve <- NULL
+  # preparing graphical info
+  p <- plot(dataX, dataY)
+  curve <- NULL
 
-    # the function must perform different operations depending on the type of fitting specified, but it mostly follows the same steps for each type
-    if (fitting == "l") {
-        # LINEAR
-        model <- lm(dataY ~ dataX)
+  # the function must perform different operations depending on the type of fitting specified, but it mostly follows the same steps for each type
+  if (fitting == "l") {
+    # LINEAR
+    model <- lm(dataY ~ dataX)
 
-        a <- coef(model)[1]
-        b <- coef(model)[2]
+    a <- coef(model)[1]
+    b <- coef(model)[2]
 
-        curve <- curve((a + b * x), from = min(dataX), to = max(dataX), col = "blue", add = TRUE)
+    curve <- curve((a + b * x), from = min(dataX), to = max(dataX), col = "blue", add = TRUE)
 
-        yEst <- a + b * dataX
-        err <- err - yEst
-    } else if (fitting == "e") {
-        # EXPONENTIAL
-        lnX <- log(dataX)
-        lnY <- log(dataY)
+    yEst <- a + b * dataX
+    err <- err - yEst
+  } else if (fitting == "e") {
+    # EXPONENTIAL
+    lnX <- log(dataX)
+    lnY <- log(dataY)
 
-        model <- lm(lnY ~ lnX)
+    model <- lm(lnY ~ lnX)
 
-        a <- exp(coef(model))[1]
-        b <- coef(model)[2]
+    a <- exp(coef(model))[1]
+    b <- coef(model)[2]
 
-        curve <- curve((a * x^b), from = min(dataX), to = max(dataX), col = "green", add = TRUE)
+    curve <- curve((a * x^b), from = min(dataX), to = max(dataX), col = "green", add = TRUE)
 
-        yEst <- a * x^b
-        err <- err - yEst
-    } else if (fitting == "i") {
-        # HYPERBOLIC / INVERSE
-        model <- lm(1 / dataY ~ dataX)
+    yEst <- a * x^b
+    err <- err - yEst
+  } else if (fitting == "i") {
+    # HYPERBOLIC / INVERSE
+    model <- lm(1 / dataY ~ dataX)
 
-        a <- coef(model)[1]
-        b <- coef(model)[2]
+    a <- coef(model)[1]
+    b <- coef(model)[2]
 
-        curve <- curve((1 / (a + b * x)), from = min(dataX), to = max(dataX), col = "red", add = TRUE)
+    curve <- curve((1 / (a + b * x)), from = min(dataX), to = max(dataX), col = "red", add = TRUE)
 
-        yEst <- 1 / (a + b * dataX)
-        err <- err - yEst
-    } else if (fitting == "q") {
-        # QUADRATIC
-        dataX2 <- dataX^2
+    yEst <- 1 / (a + b * dataX)
+    err <- err - yEst
+  } else if (fitting == "q") {
+    # QUADRATIC
+    dataX2 <- dataX^2
 
-        model <- lm(dataY ~ dataX + dataX2)
+    model <- lm(dataY ~ dataX + dataX2)
 
-        a <- coef(model)[3]
-        b <- coef(model)[2]
-        c <- coef(model)[1]
+    a <- coef(model)[3]
+    b <- coef(model)[2]
+    c <- coef(model)[1]
 
-        curve <- curve((a * (x^2) + (b * x) + c), from = min(dataX), to = max(dataX), col = "black", add = TRUE)
+    curve <- curve((a * (x^2) + (b * x) + c), from = min(dataX), to = max(dataX), col = "black", add = TRUE)
 
-        yEst <- a * (dataX2) + (b * dataX) + c
-        err <- err - yEst
-    } else if (fitting == "t") {
-        model <- lm(dataY ~ 0 + sin(dataX) + cos(dataX))
+    yEst <- a * (dataX2) + (b * dataX) + c
+    err <- err - yEst
+  } else if (fitting == "t") {
+    model <- lm(dataY ~ 0 + sin(dataX) + cos(dataX))
 
-        a <- coef(model)[1]
-        b <- coef(model)[2]
+    a <- coef(model)[1]
+    b <- coef(model)[2]
 
-        curve <- curve((a * sin(x) + b * cos(x)), from = min(dataX), to = max(dataX), col = "purple", add = TRUE)
+    curve <- curve((a * sin(x) + b * cos(x)), from = min(dataX), to = max(dataX), col = "purple", add = TRUE)
 
-        yEst <- a * sin(dataX) + b * cos(dataX)
-        err <- err - yEst
-    }
+    yEst <- a * sin(dataX) + b * cos(dataX)
+    err <- err - yEst
+  }
 
-    # calculation of final variables
-    MSE <- mean(err^2)
-    varY <- var(dataY) * (n - 1) / n
-    R2 <- 1 - (MSE / varY)
+  # calculation of final variables
+  MSE <- mean(err^2)
+  varY <- var(dataY) * (n - 1) / n
+  R2 <- 1 - (MSE / varY)
 
-    result = list("Model" = model, "MSE" = MSE, "VarianceY" = varY, "R^2" = R2, "Plot" = p, "Curve" = curve)
-    return(result)
+  result <- list("Model" = model, "MSE" = MSE, "VarianceY" = varY, "R^2" = R2, "Plot" = p, "Curve" = curve)
+  return(result)
 }

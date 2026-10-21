@@ -8,6 +8,6 @@
 #' @examples
 #' combination(5, 2)
 #' @export
-combination <- function(x, y){
+combination <- function(x, y) {
   choose(x, y)
 }
