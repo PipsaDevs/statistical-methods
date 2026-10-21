@@ -25,12 +25,17 @@ moving_average <- function(arr, order) {
 
 #' Classical Time Series Decomposition & Trend Fitting
 #'
-#' Performs seasonal decomposition using moving averages and fits a linear trend to deseasonalized data.
+#' Performs seasonal decomposition
+#' using moving averages
+#' and fits a linear trend to deseasonalized data.
 #'
 #' @param arr Numeric vector of time series observations.
 #' @param initialyear Starting year for the time series.
 #' @param freq Seasonal frequency (e.g., 4 for quarterly, 12 for monthly).
-#' @return Displays plots and prints trend equation to console. Also returns a list containing the original time series, trend, seasonal indices, deseasonalized data, and trend model.
+#' @return Displays plots and prints trend equation to console.
+#' Also returns a list containing
+#' the original time series, trend, seasonal indices,
+#' deseasonalized data, and trend model.
 #' @examples
 #' data_vals <- c(10, 15, 8, 20, 12, 18, 9, 25)
 #' time_series(data_vals, initialyear = 2020, freq = 4)
@@ -200,10 +205,10 @@ calculate_deflation <- function(nominal_values, cpi_index) {
   real_values <- nominal_values / cpi_proportion
   purchasing_power_factor <- 1 / cpi_proportion
 
-  return(data.frame(
+  data.frame(
     Nominal = nominal_values,
     CPI = cpi_index,
     Real_Value = real_values,
     Purchasing_Power = purchasing_power_factor
-  ))
+  )
 }

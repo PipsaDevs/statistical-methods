@@ -32,6 +32,7 @@ tableFromVariables <- function(x, y) {
 #'
 #' @param tbl A contingency table.
 #' @return A data.frame with two columns: `x` and `y`.
+#' You can access d$x and d$y for the corresponding vectors
 #' @examples
 #' tbl <- table(c(1, 1, 2), c(3, 4, 4))
 #' tableToVectors(tbl)
@@ -49,7 +50,7 @@ tableToVectors <- function(tbl) {
     y_vec <- as.numeric(as.character(y_vec))
   }
 
-  return(data.frame(x = x_vec, y = y_vec)) # Returns data frame d. You can access d$x and d$y for the variable x vector and the variable y vector
+  data.frame(x = x_vec, y = y_vec)
 }
 
 #' Marginal Distribution of X
@@ -96,12 +97,13 @@ isIndependent <- function(x, y) {
 
   relativeProducts <- outer(margin.table(freqs, 1), margin.table(freqs, 2), "*")
 
-  return(isTRUE(all.equal(c(freqs), c(relativeProducts))))
+  isTRUE(all.equal(c(freqs), c(relativeProducts)))
 }
 
 #' Population Covariance
 #'
-#' Computes the population covariance between variables X and Y: mean((x - mean(x)) * (y - mean(y))).
+#' Computes the population covariance between variables X and Y:
+#'  mean((x - mean(x)) * (y - mean(y))).
 #'
 #' @param x Numeric vector for X.
 #' @param y Numeric vector for Y.
@@ -115,7 +117,8 @@ covariance <- function(x, y) {
 
 #' Pearson Linear Correlation
 #'
-#' Computes the Pearson linear correlation coefficient: cov(X, Y) / (std_dev(X) * std_dev(Y)).
+#' Computes the Pearson linear correlation coefficient:
+#'  cov(X, Y) / (std_dev(X) * std_dev(Y)).
 #'
 #' @param x Numeric vector for X.
 #' @param y Numeric vector for Y.
@@ -183,7 +186,7 @@ mom_ord <- function(values, r, s, a, b) {
       res <- res + (((x[i] - a)^r) * ((y[j] - b)^s) * values[i, j])
     }
   }
-  return(res)
+  res
 }
 
 #' Bivariate Joint Central Moment
@@ -327,5 +330,5 @@ modelFunc <- function(dataX, dataY, fitting) {
     "Plot" = p,
     "Curve" = curve
   )
-  return(result)
+  result
 }
