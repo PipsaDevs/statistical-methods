@@ -185,8 +185,8 @@ mom_ord <- function(values, r, s, a, b) {
   x <- as.numeric(rownames(values))
   y <- as.numeric(colnames(values))
   res <- 0
-  for (i in 1:length(x)) {
-    for (j in 1:length(y)) {
+  for (i in seq_along(x)) {
+    for (j in seq_along(y)) {
       res <- res + (((x[i] - a)^r) * ((y[j] - b)^s) * values[i, j])
     }
   }
