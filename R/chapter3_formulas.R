@@ -45,7 +45,13 @@ time_series <- function(data_array, initial_year, freq) {
 
   season_random <- ts_data / trend
 
-  raw_seasonal_indices <- colMeans(matrix(season_random, ncol = freq, byrow = TRUE), na.rm = TRUE)
+  raw_seasonal_indices <- colMeans(
+    matrix(
+      season_random,
+      ncol = freq, byrow = TRUE
+    ),
+    na.rm = TRUE
+  )
 
   seasonal_indices <- raw_seasonal_indices / mean(raw_seasonal_indices)
 
@@ -56,13 +62,18 @@ time_series <- function(data_array, initial_year, freq) {
   time_index <- seq_along(ts_data)
   trend_model <- lm(deseasonalized_data ~ time_index)
 
-  trend_line <- ts(predict.lm(trend_model), start = c(initial_year, 1), frequency = freq)
+  trend_line <- ts(
+    predict.lm(trend_model),
+    start = c(initial_year, 1), frequency = freq
+  )
 
   cat("\n-------- TIME SERIES DECOMPOSITION SUMMARY --------\n")
 
   cat("\nADJUSTED SEASONAL INDICES (Multiplicative):\n")
   print(round(seasonal_indices, 4))
-  cat("Note: Values > 1 indicate peaks, < 1 indicate troughs for that period.\n")
+  cat(
+    "Note: Values > 1 indicate peaks, < 1 indicate troughs for that period.\n"
+  )
 
   cat("\nLINEAR TREND MODEL (On Deseasonalized Data):\n")
   coeffs <- coef(trend_model)
@@ -91,7 +102,8 @@ time_series <- function(data_array, initial_year, freq) {
 }
 #' Autocorrelation for a Specific Lag
 #'
-#' Calculates the correlation between a time series and itself lagged by n periods.
+#' Calculates the correlation between a time
+#' series and itself lagged by n periods.
 #'
 #' @param data Numeric vector of observations.
 #' @param n Integer lag/frequency.
@@ -110,7 +122,8 @@ autoCorrel <- function(data, n) {
 
 #' Find Dominant Frequency by Maximum Autocorrelation
 #'
-#' Checks autocorrelation for lags from 1 up to 12 (or length-1) to find the frequency with the highest correlation.
+#' Checks autocorrelation for lags from 1 up to 12
+#' (or length-1) to find the frequency with the highest correlation.
 #'
 #' @param data Numeric vector of time series observations.
 #' @return Prints the highest correlation frequency to console.
@@ -135,12 +148,18 @@ calculateCorrel <- function(data) {
     }
   }
 
-  print(paste("The frequency will be: ", bigfreq, ", with correlation: ", round(biggest, 5)))
+  print(
+    paste(
+      "The frequency will be: ", bigfreq,
+      ", with correlation: ", round(biggest, 5)
+    )
+  )
 }
 
 #' Obtain Function from Model Coefficients
 #'
-#' Creates a string from a linear model's coefficients in the form "intercept + slope * x".
+#' Creates a string from a linear model's coefficients
+#' in the form "intercept + slope * x".
 #'
 #' @param x A model (obtained from lm())
 #' @return A string representation of the linear function.
@@ -160,15 +179,21 @@ obtain_function_from_model <- function(model) {
 
 #' Deflate Nominal Monetary Series to Real Values
 #'
-#' Converts nominal monetary observations into real base-year values using CPI index figures.
+#' Converts nominal monetary observations
+#' into real base-year values using CPI index figures.
 #'
-#' @param nominal_values Numeric vector of observed nominal figures across time periods.
-#' @param cpi_index Numeric vector of Consumer Price Index values (base year = 100).
-#' @return A data frame containing Nominal Values, CPI, Real Values, and Purchasing Power factor.
+#' @param nominal_values Numeric vector of
+#' observed nominal figures across time periods.
+#' @param cpi_index Numeric vector of
+#' Consumer Price Index values (base year = 100).
+#' @return A data frame containing
+#' Nominal Values, CPI, Real Values, and Purchasing Power factor.
 #' @export
 calculate_deflation <- function(nominal_values, cpi_index) {
   if (length(nominal_values) != length(cpi_index)) {
-    stop("Nominal values vector and CPI index vector must have the same length.")
+    stop(
+      "Nominal values vector and CPI index vector must have the same length."
+    )
   }
 
   cpi_proportion <- cpi_index / 100

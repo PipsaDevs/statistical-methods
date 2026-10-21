@@ -129,10 +129,12 @@ linear_correlation <- function(x, y) {
 
 #' Conditional Distribution Table Generator
 #'
-#' Computes the conditional distribution (absolute and relative frequencies) given a condition variable.
+#' Computes the conditional distribution
+#' (absolute and relative frequencies) given a condition variable.
 #'
 #' @param values A contingency table or matrix with row/column names.
-#' @param condition_var Either "x" (conditioning on row value) or "y" (conditioning on col value).
+#' @param condition_var Either "x" (conditioning on row value)
+#' or "y" (conditioning on col value).
 #' @param value The specific value conditioned on (character or numeric).
 #' @return A data.frame with counts and relative frequencies.
 #' @examples
@@ -164,7 +166,8 @@ cond_dist_gen <- function(values, condition_var = c("x", "y"), value) {
 #'
 #' Computes bivariate joint moment sum((x - a)^r * (y - b)^s * `values[i, j]`).
 #'
-#' @param values A matrix/table of joint frequencies with numeric row and column names.
+#' @param values A matrix/table of joint frequencies
+#' with numeric row and column names.
 #' @param r Integer order for X.
 #' @param s Integer order for Y.
 #' @param a Numeric reference point for X.
@@ -185,9 +188,11 @@ mom_ord <- function(values, r, s, a, b) {
 
 #' Bivariate Joint Central Moment
 #'
-#' Computes the bivariate central moment of order (r, s) about means of row/col names.
+#' Computes the bivariate central moment
+#' of order (r, s) about means of row/col names.
 #'
-#' @param values A matrix/table of joint frequencies with numeric row and column names.
+#' @param values A matrix/table of joint frequencies
+#' with numeric row and column names.
 #' @param r Integer order for X.
 #' @param s Integer order for Y.
 #' @return Numeric central moment value.
@@ -204,7 +209,8 @@ mom_cent <- function(values, r, s) {
 
 #' Regression Curve Fitting & Evaluation
 #'
-#' Fits a mathematical model to bivariate data (X, Y) and calculates Model, MSE, Var(Y), and R^2.
+#' Fits a mathematical model to bivariate data (X, Y)
+#' and calculates Model, MSE, Var(Y), and R^2.
 #'
 #' @param dataX Numeric vector for independent variable X.
 #' @param dataY Numeric vector for dependent variable Y.
@@ -228,7 +234,9 @@ modelFunc <- function(dataX, dataY, fitting) {
   p <- plot(dataX, dataY)
   curve <- NULL
 
-  # the function must perform different operations depending on the type of fitting specified, but it mostly follows the same steps for each type
+  # the function must perform different
+  # operations depending on the type of fitting specified,
+  # but it mostly follows the same steps for each type
   if (fitting == "l") {
     # LINEAR
     model <- lm(dataY ~ dataX)
@@ -236,7 +244,10 @@ modelFunc <- function(dataX, dataY, fitting) {
     a <- coef(model)[1]
     b <- coef(model)[2]
 
-    curve <- curve((a + b * x), from = min(dataX), to = max(dataX), col = "blue", add = TRUE)
+    curve <- curve(
+      (a + b * x),
+      from = min(dataX), to = max(dataX), col = "blue", add = TRUE
+    )
 
     yEst <- a + b * dataX
     err <- err - yEst
@@ -250,7 +261,10 @@ modelFunc <- function(dataX, dataY, fitting) {
     a <- exp(coef(model))[1]
     b <- coef(model)[2]
 
-    curve <- curve((a * x^b), from = min(dataX), to = max(dataX), col = "green", add = TRUE)
+    curve <- curve(
+      (a * x^b),
+      from = min(dataX), to = max(dataX), col = "green", add = TRUE
+    )
 
     yEst <- a * x^b
     err <- err - yEst
@@ -261,7 +275,10 @@ modelFunc <- function(dataX, dataY, fitting) {
     a <- coef(model)[1]
     b <- coef(model)[2]
 
-    curve <- curve((1 / (a + b * x)), from = min(dataX), to = max(dataX), col = "red", add = TRUE)
+    curve <- curve(
+      (1 / (a + b * x)),
+      from = min(dataX), to = max(dataX), col = "red", add = TRUE
+    )
 
     yEst <- 1 / (a + b * dataX)
     err <- err - yEst
@@ -275,7 +292,10 @@ modelFunc <- function(dataX, dataY, fitting) {
     b <- coef(model)[2]
     c <- coef(model)[1]
 
-    curve <- curve((a * (x^2) + (b * x) + c), from = min(dataX), to = max(dataX), col = "black", add = TRUE)
+    curve <- curve(
+      (a * (x^2) + (b * x) + c),
+      from = min(dataX), to = max(dataX), col = "black", add = TRUE
+    )
 
     yEst <- a * (dataX2) + (b * dataX) + c
     err <- err - yEst
@@ -285,7 +305,10 @@ modelFunc <- function(dataX, dataY, fitting) {
     a <- coef(model)[1]
     b <- coef(model)[2]
 
-    curve <- curve((a * sin(x) + b * cos(x)), from = min(dataX), to = max(dataX), col = "purple", add = TRUE)
+    curve <- curve(
+      (a * sin(x) + b * cos(x)),
+      from = min(dataX), to = max(dataX), col = "purple", add = TRUE
+    )
 
     yEst <- a * sin(dataX) + b * cos(dataX)
     err <- err - yEst
@@ -296,6 +319,13 @@ modelFunc <- function(dataX, dataY, fitting) {
   varY <- var(dataY) * (n - 1) / n
   R2 <- 1 - (MSE / varY)
 
-  result <- list("Model" = model, "MSE" = MSE, "VarianceY" = varY, "R^2" = R2, "Plot" = p, "Curve" = curve)
+  result <- list(
+    "Model" = model,
+    "MSE" = MSE,
+    "VarianceY" = varY,
+    "R^2" = R2,
+    "Plot" = p,
+    "Curve" = curve
+  )
   return(result)
 }

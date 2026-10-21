@@ -201,7 +201,8 @@ ord_moment <- function(x, r) moment(x, r, 0)
 
 #' Central moment
 #'
-#' Computes the central moment of order r (w.r.t. the mean): m_r = mean((x - mean)^r).
+#' Computes the central moment of order r
+#'  (w.r.t. the mean): m_r = mean((x - mean)^r).
 #'
 #' @param x A numeric vector.
 #' @param r Integer order of the moment.
