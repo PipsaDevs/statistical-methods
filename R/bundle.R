@@ -23,7 +23,7 @@ bundle <- function(fn, copy = TRUE, env = parent.frame()) {
       name,
       envir = env,
       mode = "function",
-      inherits = TRUE,
+      inherits = FALSE,
       ifnotfound = NULL
     )
     if (!is.null(caller_fn)) {
