@@ -6,7 +6,7 @@
 #'
 #' @param fn Function name (as a bare symbol or a character string).
 #' @param copy Logical, whether to automatically copy to the clipboard.
-#' @param env The environment in which the function is located
+#' @param env The environment to search in
 #' @return Invisibly returns the concatenated code string.
 #' @examples
 #' \dontrun{
@@ -46,7 +46,7 @@ bundle <- function(fn, copy = TRUE, env = parent.frame()) {
   # Identify all custom functions defined in the global environment
   all_funcs <- unique(c(
     ls(envir = env, all.names = TRUE),
-    ls(envir = environment(bundle))
+    ls(envir = environment(bundle), all.names = TRUE)
   ))
   all_funcs <- all_funcs[
     vapply(
