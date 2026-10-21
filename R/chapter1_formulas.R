@@ -1,6 +1,5 @@
 # Basic stuff
 
-
 #' Absolute frequency
 #'
 #' Computes the absolute frequency table (counts) for a sample vector.
@@ -277,38 +276,6 @@ detect_outliers <- function(x) {
         moderate_outliers = mod_outliers,
         extreme_outliers = ext_outliers
     ))
-}
-
-#' Calculate Specific Percentile P_k
-#'
-#' @param x Numeric vector of raw observations.
-#' @param k Percentile rank to compute (integer between 1 and 99).
-#' @return The percentile value P_k.
-calculate_percentile <- function(x, k) {
-  if (k < 1 || k > 99) {
-    stop("Percentile k must be an integer between 1 and 99.")
-  }
-
-  c_val <- k / 100
-  p_k <- calculate_quantile(x, c = c_val, grouped = FALSE)
-
-  return(p_k)
-}
-
-#' Compute Quadratic Mean (Root Mean Square - RMS)
-#'
-#' @param x Numeric vector of values or class marks.
-#' @param n Optional numeric vector of absolute frequencies (for grouped data).
-#' @return The calculated quadratic mean (RMS).
-calculate_rms <- function(x, n = NULL) {
-  if (is.null(n)) {
-    rms_val <- sqrt(mean(x^2))
-  } else {
-    N <- sum(n)
-    rms_val <- sqrt(sum(n * (x^2)) / N)
-  }
-
-  return(rms_val)
 }
 
 #' Root mean square (rms)
