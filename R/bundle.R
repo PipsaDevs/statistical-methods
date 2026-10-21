@@ -15,7 +15,7 @@
 #' @export
 bundle <- function(fn, copy = TRUE, env = parent.frame()) {
   fn_expr <- substitute(fn)
-  fn_name <- if (is.character(fn_expr)) fn_expr else deparse(fn_expr)
+  fn_name <- if (is.character(fn_expr)) fn_expr else as.character(fn_expr)
 
   if (!exists(fn_name, envir = env, mode = "function")) {
     stop(paste("Function", fn_name, "not found in environment!"))
