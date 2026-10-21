@@ -5,13 +5,13 @@
 #' with a specified number of rows.
 #'
 #' @param x A vector of table cell counts.
-#' @param NRows Integer number of rows for the matrix.
+#' @param nrows Integer number of rows for the matrix.
 #' @return An R `table` object.
 #' @examples
-#' tableFromVector(c(10, 20, 30, 40), NRows = 2)
+#' table_from_vector(c(10, 20, 30, 40), NRows = 2)
 #' @export
-tableFromVector <- function(x, NRows) {
-  as.table(matrix(x, nrow = NRows, byrow = TRUE))
+table_from_vector <- function(x, nrows) {
+  as.table(matrix(x, nrow = nrows, byrow = TRUE))
 }
 
 #' Two-Variable Contingency Table
@@ -22,9 +22,9 @@ tableFromVector <- function(x, NRows) {
 #' @param y A vector for variable Y.
 #' @return A contingency table.
 #' @examples
-#' tableFromVariables(c(1, 1, 2, 2), c("A", "B", "A", "B"))
+#' table_from_variables(c(1, 1, 2, 2), c("A", "B", "A", "B"))
 #' @export
-tableFromVariables <- function(x, y) {
+table_from_variables <- function(x, y) {
   table(x, y)
 }
 
@@ -38,9 +38,9 @@ tableFromVariables <- function(x, y) {
 #' You can access d$x and d$y for the corresponding vectors
 #' @examples
 #' tbl <- table(c(1, 1, 2), c(3, 4, 4))
-#' tableToVectors(tbl)
+#' table_to_vectors(tbl)
 #' @export
-tableToVectors <- function(tbl) {
+table_to_vectors <- function(tbl) {
   df_freq <- as.data.frame(tbl)
 
   x_vec <- rep(df_freq[[1]], times = df_freq$Freq)
@@ -64,10 +64,10 @@ tableToVectors <- function(tbl) {
 #' @param y A vector for variable Y.
 #' @return A 1D table of marginal frequencies for X.
 #' @examples
-#' marginalX(c(1, 1, 2, 2), c(3, 4, 3, 4))
+#' marginal_x(c(1, 1, 2, 2), c(3, 4, 3, 4))
 #' @export
-marginalX <- function(x, y) {
-  margin.table(tableFromVariables(x, y), 1)
+marginal_x <- function(x, y) {
+  margin.table(table_from_variables(x, y), 1)
 }
 
 #' Marginal Distribution of Y
@@ -78,10 +78,10 @@ marginalX <- function(x, y) {
 #' @param y A vector for variable Y.
 #' @return A 1D table of marginal frequencies for Y.
 #' @examples
-#' marginalY(c(1, 1, 2, 2), c(3, 4, 3, 4))
+#' marginal_y(c(1, 1, 2, 2), c(3, 4, 3, 4))
 #' @export
-marginalY <- function(x, y) {
-  margin.table(tableFromVariables(x, y), 2)
+marginal_y <- function(x, y) {
+  margin.table(table_from_variables(x, y), 2)
 }
 
 #' Test for Statistical Independence
@@ -93,15 +93,15 @@ marginalY <- function(x, y) {
 #' @param y A vector for variable Y.
 #' @return Logical `TRUE` if independent, `FALSE` otherwise.
 #' @examples
-#' isIndependent(c(1, 1, 2, 2), c(3, 4, 3, 4))
+#' is_independent(c(1, 1, 2, 2), c(3, 4, 3, 4))
 #' @export
-isIndependent <- function(x, y) {
-  tbl <- tableFromVariables(x, y)
+is_independent <- function(x, y) {
+  tbl <- table_from_variables(x, y)
   freqs <- prop.table(tbl)
 
-  relativeProducts <- outer(margin.table(freqs, 1), margin.table(freqs, 2), "*")
+  rel_products <- outer(margin.table(freqs, 1), margin.table(freqs, 2), "*")
 
-  isTRUE(all.equal(c(freqs), c(relativeProducts)))
+  isTRUE(all.equal(c(freqs), c(rel_products)))
 }
 
 #' Population Covariance
@@ -217,28 +217,28 @@ mom_cent <- function(values, r, s) {
 #' Regression Curve Fitting & Evaluation
 #'
 #' Fits a mathematical model to bivariate data (X, Y)
-#' and calculates Model, MSE, Var(Y), and R^2.
+#' and calculates Model, mse, Var(Y), and R^2.
 #'
-#' @param dataX Numeric vector for independent variable X.
-#' @param dataY Numeric vector for dependent variable Y.
+#' @param data_x Numeric vector for independent variable X.
+#' @param data_y Numeric vector for dependent variable Y.
 #' @param fitting Character specifying model type:
 #'   - "l": Linear (y = a + bx)
 #'   - "e": Exponential (y = a * x^b)
 #'   - "i": Hyperbolic/Inverse (y = 1 / (a + bx))
 #'   - "q": Quadratic (y = ax^2 + bx + c)
 #'   - "t": Trigonometric (y = a·sin(x) + b·cos(x))
-#' @return A named list: Model, MSE, Variance of Y, R^2, Plot, Curve.
+#' @return A named list: Model, mse, Variance of Y, R^2, Plot, Curve.
 #' @examples
 #' x <- c(1, 2, 3, 4, 5)
 #' y <- c(2, 4, 5, 8, 10)
-#' modelFunc(x, y, fitting = "l")
+#' model_func(x, y, fitting = "l")
 #' @export
-modelFunc <- function(dataX, dataY, fitting) {
-  n <- length(dataY)
-  err <- dataY
+model_func <- function(data_x, data_y, fitting) {
+  n <- length(data_y)
+  err <- data_y
 
   # preparing graphical info
-  p <- plot(dataX, dataY)
+  p <- plot(data_x, data_y)
   curve <- NULL
 
   # the function must perform different
@@ -246,22 +246,22 @@ modelFunc <- function(dataX, dataY, fitting) {
   # but it mostly follows the same steps for each type
   if (fitting == "l") {
     # LINEAR
-    model <- lm(dataY ~ dataX)
+    model <- lm(data_y ~ data_x)
 
     a <- coef(model)[1]
     b <- coef(model)[2]
 
     curve <- curve(
       (a + b * x),
-      from = min(dataX), to = max(dataX), col = "blue", add = TRUE
+      from = min(data_x), to = max(data_x), col = "blue", add = TRUE
     )
 
-    yEst <- a + b * dataX
-    err <- err - yEst
+    y_est <- a + b * data_x
+    err <- err - y_est
   } else if (fitting == "e") {
     # EXPONENTIAL
-    lnX <- log(dataX)
-    lnY <- log(dataY)
+    lnX <- log(data_x)
+    lnY <- log(data_y)
 
     model <- lm(lnY ~ lnX)
 
@@ -270,30 +270,30 @@ modelFunc <- function(dataX, dataY, fitting) {
 
     curve <- curve(
       (a * x^b),
-      from = min(dataX), to = max(dataX), col = "green", add = TRUE
+      from = min(data_x), to = max(data_x), col = "green", add = TRUE
     )
 
-    yEst <- a * x^b
-    err <- err - yEst
+    y_est <- a * x^b
+    err <- err - y_est
   } else if (fitting == "i") {
-    # HYPERBOLIC / INVERSE
-    model <- lm(1 / dataY ~ dataX)
+    # Hyperbolic aka inverse
+    model <- lm(1 / data_y ~ data_x)
 
     a <- coef(model)[1]
     b <- coef(model)[2]
 
     curve <- curve(
       (1 / (a + b * x)),
-      from = min(dataX), to = max(dataX), col = "red", add = TRUE
+      from = min(data_x), to = max(data_x), col = "red", add = TRUE
     )
 
-    yEst <- 1 / (a + b * dataX)
-    err <- err - yEst
+    y_est <- 1 / (a + b * data_x)
+    err <- err - y_est
   } else if (fitting == "q") {
     # QUADRATIC
-    dataX2 <- dataX^2
+    data_x2 <- data_x^2
 
-    model <- lm(dataY ~ dataX + dataX2)
+    model <- lm(data_y ~ data_x + data_x2)
 
     a <- coef(model)[3]
     b <- coef(model)[2]
@@ -301,36 +301,36 @@ modelFunc <- function(dataX, dataY, fitting) {
 
     curve <- curve(
       (a * (x^2) + (b * x) + c),
-      from = min(dataX), to = max(dataX), col = "black", add = TRUE
+      from = min(data_x), to = max(data_x), col = "black", add = TRUE
     )
 
-    yEst <- a * (dataX2) + (b * dataX) + c
-    err <- err - yEst
+    y_est <- a * (data_x2) + (b * data_x) + c
+    err <- err - y_est
   } else if (fitting == "t") {
-    model <- lm(dataY ~ 0 + sin(dataX) + cos(dataX))
+    model <- lm(data_y ~ 0 + sin(data_x) + cos(data_x))
 
     a <- coef(model)[1]
     b <- coef(model)[2]
 
     curve <- curve(
       (a * sin(x) + b * cos(x)),
-      from = min(dataX), to = max(dataX), col = "purple", add = TRUE
+      from = min(data_x), to = max(data_x), col = "purple", add = TRUE
     )
 
-    yEst <- a * sin(dataX) + b * cos(dataX)
-    err <- err - yEst
+    y_est <- a * sin(data_x) + b * cos(data_x)
+    err <- err - y_est
   }
 
   # calculation of final variables
-  MSE <- mean(err^2)
-  varY <- var(dataY) * (n - 1) / n
-  R2 <- 1 - (MSE / varY)
+  mse <- mean(err^2)
+  var_y <- var(data_y) * (n - 1) / n
+  r2 <- 1 - (mse / var_y)
 
   result <- list(
     "Model" = model,
-    "MSE" = MSE,
-    "VarianceY" = varY,
-    "R^2" = R2,
+    "mse" = mse,
+    "VarianceY" = var_y,
+    "R^2" = r2,
     "Plot" = p,
     "Curve" = curve
   )

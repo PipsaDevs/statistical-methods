@@ -105,7 +105,7 @@ time_series <- function(data_array, initial_year, freq) {
     trend_model = trend_model
   )
 }
-#' Autocorrelation for a Specific Lag
+#' auto_correlation for a Specific Lag
 #'
 #' Calculates the correlation between a time
 #' series and itself lagged by n periods.
@@ -114,9 +114,9 @@ time_series <- function(data_array, initial_year, freq) {
 #' @param n Integer lag/frequency.
 #' @return Numeric correlation value.
 #' @examples
-#' autoCorrel(c(1, 3, 2, 5, 4, 7, 6, 9), n = 2)
+#' auto_correl(c(1, 3, 2, 5, 4, 7, 6, 9), n = 2)
 #' @export
-autoCorrel <- function(data, n) {
+auto_correl <- function(data, n) {
   # Remove the last n data points
   xx1 <- head(data, -n)
   # Remove the first n data points
@@ -125,17 +125,17 @@ autoCorrel <- function(data, n) {
   sqrt(summary(lm(xx1 ~ xx2))$r.squared)
 }
 
-#' Find Dominant Frequency by Maximum Autocorrelation
+#' Find Dominant Frequency by Maximum auto_correlation
 #'
-#' Checks autocorrelation for lags from 1 up to 12
+#' Checks auto_correlation for lags from 1 up to 12
 #' (or length-1) to find the frequency with the highest correlation.
 #'
 #' @param data Numeric vector of time series observations.
 #' @return Prints the highest correlation frequency to console.
 #' @examples
-#' calculateCorrel(c(1, 4, 2, 8, 2, 4, 2, 8, 3, 5, 2, 9))
+#' calculate_correl(c(1, 4, 2, 8, 2, 4, 2, 8, 3, 5, 2, 9))
 #' @export
-calculateCorrel <- function(data) {
+calculate_correl <- function(data) {
   biggest <- 0
   bigfreq <- 1
   top <- 12
@@ -145,7 +145,7 @@ calculateCorrel <- function(data) {
   }
 
   for (i in 1:top) {
-    current <- autoCorrel(data, i)
+    current <- auto_correl(data, i)
 
     if (current > biggest) {
       biggest <- current
