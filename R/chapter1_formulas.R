@@ -313,3 +313,22 @@ detect_outliers <- function(x) {
 rms <- function(x) {
   sqrt(mean(x^2))
 }
+
+
+#' Quantile on continuous case
+#'
+#' Calculates the quantile on the continuous case
+#' NOTE: For the discrete (normal) case, use R's built-in quantile() function
+#'
+#' @param c A value between 0 and 1
+#' @param N Size of the array
+#' @param L Lower limit of the interval
+#' @param N_prev The value in the cumulative absolute frequencies such that N_prev <= cN
+#' @param ni Absolute frequency of the interval
+#' @param ai Interval width
+#'
+#' @export
+
+quantile_continuous <- function(c, N, L, N_prev, ni, ai) {
+  L + ((c * N - N_prev) / ni) * ai
+}
