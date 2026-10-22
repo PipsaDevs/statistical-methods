@@ -15,7 +15,7 @@ Cada función que se define está acompañada con sus comentarios para que roxyg
 
 Tambien tiene un generador de documentación que funciona con roxygenv2, para consultar las funciones en el navegador en vez de Rstudio to chiquito.
 
-## ¿Como usarlo de cara a los examanes?
+## ¿Como usarlo de cara a los examenes?
 
 ### Contenido
 Cada vez que se hace un commit o se hace un merge a la rama main, se crea un artefacto, que contendrá todo lo que usarás para los examenes.
