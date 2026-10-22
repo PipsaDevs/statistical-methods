@@ -16,13 +16,13 @@ absolute_freq <- function(x) table(x)
 #' Computes the mode (most frequent value) of a numeric sample.
 #'
 #' @param x A numeric vector.
-#' @return A numeric vector containing the mode(s).
+#' @return The mode of the vector provided
 #' @examples
 #' stat_mode(c(1, 2, 2, 3, 3, 4))
 #' @export
 stat_mode <- function(x) {
   tbl <- absolute_freq(x)
-  as.numeric(names(tbl)[tbl == max(tbl)])
+  as.numeric(names(tbl)[which.max(tbl)])
 }
 
 #' Interquartile range
