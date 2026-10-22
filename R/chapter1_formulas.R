@@ -25,6 +25,21 @@ stat_mode <- function(x) {
   as.numeric(names(tbl)[tbl == max(tbl)])
 }
 
+#' Interquartile range
+#'
+#' Computes the Interquartile Range of a given array
+#'
+#' @param x A vector of values
+#' @return The Interquartile Range of said array
+#' @examples
+#' iqr(c(1, 2, 3, 4, 5))
+#' @export
+iqr <- function(x) {
+  q <- quantile(x, c(0.25, 0.75), type = 2)
+  iqr <- q[2] - q[1]
+  print(paste("IQR:", round(iqr, 4)))
+}
+
 #' Absolute frequency of a number
 #'
 #' Counts how many times a specific value appears in a sample.
