@@ -1,7 +1,7 @@
 # statistical-methods
 
 [![Build Pendrive Deliverables](https://github.com/PipsaDevs/statistical-methods/actions/workflows/build-pendrive.yml/badge.svg)](https://github.com/PipsaDevs/statistical-methods/actions/workflows/build-pendrive.yml)
-[![Download latest artifact](https://img.shields.io/badge/⬇️%20Descargar%20artefacto-pendrive__ready-blue?style=flat-square)](https://github.com/PipsaDevs/statistical-methods/actions/workflows/build-pendrive.yml?query=is%3Asuccess)
+[![Download latest artifact](https://img.shields.io/badge/⬇️%20Descargar%20artefacto-pendrive__ready-blue?style=flat-square)](https://nightly.link/PipsaDevs/statistical-methods/workflows/build-pendrive/main/pendrive_ready.zip)
 
 ---
 
