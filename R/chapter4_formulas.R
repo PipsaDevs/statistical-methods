@@ -11,3 +11,16 @@
 combination <- function(x, y) {
   choose(x, y)
 }
+
+conditional_probability <- function(x, y) {
+  # both x and y will be an array of probabilities, c(a, b, c, ...)
+
+  d <- 0
+
+  for (i in 1:length(x)) {
+    d <- d + x[i] * y[i]
+  }
+
+  print(paste(d, "%"))
+
+}
