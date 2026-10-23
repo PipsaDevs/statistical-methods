@@ -5,7 +5,7 @@
 # products is randomly selected, find the proportion of defective items.
 # ========================================================================
 
-source("~/programming/statistical-methods/R/chapter4_formulas.R")
+source("R/chapter4_formulas.R")
 
 machines <- c(0.5, 0.3, 0.2)
 items <- c(0.03, 0.05, 0.1)

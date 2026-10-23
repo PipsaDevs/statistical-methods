@@ -13,7 +13,7 @@
 # determine from which manufacturer it is most likely to have come.
 # ============================================================================
 
-source("~/programming/statistical-methods/R/chapter4_formulas.R")
+source("R/chapter4_formulas.R")
 
 SupArgBel <- c(1 / 6, 1 / 2) # P(A), P(B)
 
