@@ -16,13 +16,13 @@ absolute_freq <- function(x) table(x)
 #' Computes the mode (most frequent value) of a numeric sample.
 #'
 #' @param x A numeric vector.
-#' @return A numeric vector containing the mode(s).
+#' @return The mode of the vector provided
 #' @examples
 #' stat_mode(c(1, 2, 2, 3, 3, 4))
 #' @export
 stat_mode <- function(x) {
   tbl <- absolute_freq(x)
-  as.numeric(names(tbl)[tbl == max(tbl)])
+  as.numeric(names(tbl)[which.max(tbl)])
 }
 
 #' Interquartile range
@@ -312,4 +312,23 @@ detect_outliers <- function(x) {
 
 rms <- function(x) {
   sqrt(mean(x^2))
+}
+
+
+#' Quantile on continuous case
+#'
+#' Calculates the quantile on the continuous case
+#' NOTE: For the discrete (normal) case, use R's built-in quantile() function
+#'
+#' @param c A value between 0 and 1
+#' @param N Size of the array
+#' @param L Lower limit of the interval
+#' @param N_prev The value in the cumulative absolute frequencies such that N_prev <= cN
+#' @param ni Absolute frequency of the interval
+#' @param ai Interval width
+#'
+#' @export
+
+quantile_continuous <- function(c, N, L, N_prev, ni, ai) {
+  L + ((c * N - N_prev) / ni) * ai
 }
