@@ -12,6 +12,16 @@ combination <- function(x, y) {
   choose(x, y)
 }
 
+#' Conditional Probability
+#'
+#' Computes the conditional probability between two arrays of numbers
+#'
+#' @param x An array
+#' @param y An array
+#' @return The percentage
+#' @examples
+#' conditional_probability(c(0.1, 0.2, 0.3), c(0.01, 0.02, 0.03))
+#' @export
 conditional_probability <- function(x, y) {
   # both x and y will be an array of probabilities, c(a, b, c, ...)
 
