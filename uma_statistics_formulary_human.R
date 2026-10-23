@@ -944,6 +944,9 @@ conditional_distributions <- function(tab) {
 #   Returns a matrix of expected frequencies e_ij.
 # DEPENDENCIES: none.
 # ---------------------------------------------------------------------
+#
+
+# Possible implementation
 expected_frequencies <- function(tab) {
   # Step 1: Plain matrix, totals and N
   n_ij <- unclass(as.matrix(tab))
@@ -992,6 +995,8 @@ is_independent <- function(tab) {
 #   Returns one number: the chi-square statistic.
 # DEPENDENCIES: none.
 # ---------------------------------------------------------------------
+#
+# Update docs
 chi_square <- function(tab) {
   # Step 1: Observed frequencies
   observed <- unclass(as.matrix(tab))
@@ -1454,6 +1459,8 @@ plane_regression <- function(x, y, z) {
 #   regression_hyperbolic(), regression_logarithmic(), regression_power(),
 #   regression_polynomial().
 # ---------------------------------------------------------------------
+
+# Maybe?
 compare_models <- function(x, y, x_predict = NULL) {
   # Step 1: Fit every model (each one measures its errors on the original Y)
   models <- list(Linear = regression_Y_on_X(x, y), Exponential = regression_exponential(x, y),
