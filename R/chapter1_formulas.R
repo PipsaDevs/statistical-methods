@@ -5,13 +5,14 @@
 #'
 #' Prints a number/series of numbers with the correct rounding to do the exam faster
 #' @param x A number or series of numbers we want to print
+#' @param string A string to print before the number (default is empty)
 #' @param round The number of decimals to round to (default is 5)
 #' @return The number printed on the console with correct rounding
 #' @examples
 #' print(3.14159)
 #' @export
-pipsa_print <- function(x, round = 5) {
-    print(round(x, round))
+pipsa_print <- function(x, string = "", round = 5) {
+    print(paste(string, round(x, round)))
 }
 
 
@@ -343,7 +344,58 @@ pipsa_rms <- function(x) {
 #' @param ai Interval width
 #'
 #' @export
-
 pipsa_quantile_continuous <- function(c, N, L, N_prev, ni, ai) {
-  L + ((c * N - N_prev) / ni) * ai
+    L + ((c * N - N_prev) / ni) * ai
+}
+
+#' Vector info
+#'
+#' Prints a lot of useful information from an array to the screen (and also returns info)
+#'
+#' @param x A numeric vector
+#' @return A list with the mean, median, mode, variance, standard deviation, coefficient of variation, skewness, kurtosis, and outliers
+#' @examples
+#' vector_info(c(1, 2, 3, 4, 5))
+#' @export
+pipsa_vector_info <- function(x) {
+    outliers <- pipsa_detect_outliers(x)
+
+    pipsa_print(mean(x), "Mean: ")
+    pipsa_print(median(x), "Median: ")
+    pipsa_print(pipsa_stat_mode(x), "Mode: ")
+    pipsa_print(pipsa_iqr(x), "IQR: ")
+    pipsa_print(pipsa_variance(x), "Variance: ")
+    pipsa_print(pipsa_std_deviation(x), "Standard Deviation: ")
+    pipsa_print(pipsa_cv(x), "Coefficient of Variation: ")
+    pipsa_print(pipsa_f_skewness(x), "Skewness: ")
+    pipsa_print(pipsa_kurtosis(x), "Kurtosis: ")
+
+    print("Moderate Outlier Bounds:")
+    pipsa_print(outliers$moderate_bounds)
+
+    print("Extreme Outlier Bounds:")
+    pipsa_print(outliers$extreme_bounds)
+
+    if (length(outliers$moderate_outliers) > 0) {
+        print("Moderate outliers:")
+        pipsa_print(outliers$moderate_outliers)
+    }
+
+    if (length(outliers$extreme_outliers) > 0) {
+        print("Extreme outliers:")
+        pipsa_print(outliers$extreme_outliers)
+    }
+
+    return(list(
+        mean = mean(x),
+        median = median(x),
+        mode = pipsa_stat_mode(x),
+        iqr = pipsa_iqr(x),
+        variance = pipsa_variance(x),
+        std_deviation = pipsa_std_deviation(x),
+        cv = pipsa_cv(x),
+        skewness = pipsa_f_skewness(x),
+        kurtosis = pipsa_kurtosis(x),
+        outliers = outliers
+    ))
 }
