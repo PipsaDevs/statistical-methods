@@ -10,7 +10,7 @@
 #' @examples
 #' table_from_vector(c(10, 20, 30, 40), NRows = 2)
 #' @export
-table_from_vector <- function(x, nrows) {
+pipsa_table_from_vector <- function(x, nrows) {
   as.table(matrix(x, nrow = nrows, byrow = TRUE))
 }
 
@@ -24,7 +24,7 @@ table_from_vector <- function(x, nrows) {
 #' @examples
 #' table_from_variables(c(1, 1, 2, 2), c("A", "B", "A", "B"))
 #' @export
-table_from_variables <- function(x, y) {
+pipsa_table_from_variables <- function(x, y) {
   table(x, y)
 }
 
@@ -40,7 +40,7 @@ table_from_variables <- function(x, y) {
 #' tbl <- table(c(1, 1, 2), c(3, 4, 4))
 #' table_to_vectors(tbl)
 #' @export
-table_to_vectors <- function(tbl) {
+pipsa_table_to_vectors <- function(tbl) {
   df_freq <- as.data.frame(tbl)
 
   x_vec <- rep(df_freq[[1]], times = df_freq$Freq)
@@ -66,8 +66,8 @@ table_to_vectors <- function(tbl) {
 #' @examples
 #' marginal_x(c(1, 1, 2, 2), c(3, 4, 3, 4))
 #' @export
-marginal_x <- function(x, y) {
-  margin.table(table_from_variables(x, y), 1)
+pipsa_marginal_x <- function(x, y) {
+  margin.table(pipsa_table_from_variables(x, y), 1)
 }
 
 #' Marginal Distribution of Y
@@ -80,8 +80,8 @@ marginal_x <- function(x, y) {
 #' @examples
 #' marginal_y(c(1, 1, 2, 2), c(3, 4, 3, 4))
 #' @export
-marginal_y <- function(x, y) {
-  margin.table(table_from_variables(x, y), 2)
+pipsa_marginal_y <- function(x, y) {
+  margin.table(pipsa_table_from_variables(x, y), 2)
 }
 
 #' Test for Statistical Independence
@@ -95,8 +95,8 @@ marginal_y <- function(x, y) {
 #' @examples
 #' is_independent(c(1, 1, 2, 2), c(3, 4, 3, 4))
 #' @export
-is_independent <- function(x, y) {
-  tbl <- table_from_variables(x, y)
+pipsa_is_independent <- function(x, y) {
+  tbl <- pipsa_table_from_variables(x, y)
   freqs <- prop.table(tbl)
 
   rel_products <- outer(margin.table(freqs, 1), margin.table(freqs, 2), "*")
@@ -115,8 +115,34 @@ is_independent <- function(x, y) {
 #' @examples
 #' covariance(c(1, 2, 3), c(2, 4, 6))
 #' @export
-covariance <- function(x, y) {
+pipsa_covariance <- function(x, y) {
   mean((x - mean(x)) * (y - mean(y)))
+}
+
+#' Population Variance (Imported from chapter 1)
+#'
+#' Computes the population variance (divided by N, not quasi-variance N-1).
+#'
+#' @param x A numeric vector.
+#' @return The population variance.
+#' @examples
+#' variance(c(1, 2, 3, 4, 5))
+#' @export
+pipsa_variance <- function(x) {
+  mean((x - mean(x))^2)
+}
+
+#' Population Standard Deviation (Imported from chapter 1)
+#'
+#' Computes the population standard deviation (sqrt of population variance).
+#'
+#' @param x A numeric vector.
+#' @return The population standard deviation.
+#' @examples
+#' std_deviation(c(1, 2, 3, 4, 5))
+#' @export
+pipsa_std_deviation <- function(x) {
+  sqrt(pipsa_variance(x))
 }
 
 #' Pearson Linear Correlation
@@ -130,8 +156,8 @@ covariance <- function(x, y) {
 #' @examples
 #' linear_correlation(c(1, 2, 3, 4), c(2, 4, 6, 8))
 #' @export
-linear_correlation <- function(x, y) {
-  covariance(x, y) / (std_deviation(x) * std_deviation(y))
+pipsa_linear_correlation <- function(x, y) {
+  pipsa_covariance(x, y) / (pipsa_std_deviation()(x) * pipsa_std_deviation(y))
 }
 
 #' Conditional Distribution Table Generator
@@ -148,7 +174,7 @@ linear_correlation <- function(x, y) {
 #' tbl <- table(c(1, 1, 2, 2), c("A", "B", "A", "B"))
 #' cond_dist_gen(tbl, condition_var = "x", value = "1")
 #' @export
-cond_dist_gen <- function(values, condition_var = c("x", "y"), value) {
+pipsa_cond_dist_gen <- function(values, condition_var = c("x", "y"), value) {
   condition_var <- match.arg(condition_var)
   if (condition_var == "x") {
     counts <- values[as.character(value), ]
@@ -181,7 +207,7 @@ cond_dist_gen <- function(values, condition_var = c("x", "y"), value) {
 #' @param b Numeric reference point for Y.
 #' @return Numeric moment value.
 #' @export
-mom_ord <- function(values, r, s, a, b) {
+pipsa_mom_ord <- function(values, r, s, a, b) {
   x <- as.numeric(rownames(values))
   y <- as.numeric(colnames(values))
   res <- 0
@@ -204,8 +230,8 @@ mom_ord <- function(values, r, s, a, b) {
 #' @param s Integer order for Y.
 #' @return Numeric central moment value.
 #' @export
-mom_cent <- function(values, r, s) {
-  mom_ord(
+pipsa_mom_cent <- function(values, r, s) {
+  pipsa_mom_ord(
     values,
     r,
     s,
@@ -233,7 +259,7 @@ mom_cent <- function(values, r, s) {
 #' y <- c(2, 4, 5, 8, 10)
 #' model_func(x, y, fitting = "l")
 #' @export
-model_func <- function(data_x, data_y, fitting) {
+pipsa_model_func <- function(data_x, data_y, fitting) {
   n <- length(data_y)
   err <- data_y
 

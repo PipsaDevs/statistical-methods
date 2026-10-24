@@ -8,7 +8,7 @@
 #' @examples
 #' moving_average(c(10, 12, 15, 14, 18, 20, 22), order = 3)
 #' @export
-moving_average <- function(arr, order) {
+pipsa_moving_average <- function(arr, order) {
   tmparr <- c(1)
 
   for (i in 1:order) {
@@ -40,11 +40,11 @@ moving_average <- function(arr, order) {
 #' data_vals <- c(10, 15, 8, 20, 12, 18, 9, 25)
 #' time_series(data_vals, initialyear = 2020, freq = 4)
 #' @export
-time_series <- function(data_array, initial_year, freq) {
+pipsa_time_series <- function(data_array, initial_year, freq) {
   # time series data
   ts_data <- ts(data_array, start = c(initial_year, 1), frequency = freq)
 
-  trend <- moving_average(ts_data, freq)
+  trend <- pipsa_moving_average(ts_data, freq)
 
   plot(ts_data, main = "Original Time Series", ylab = "Values", xlab = "Time")
 
@@ -88,7 +88,7 @@ time_series <- function(data_array, initial_year, freq) {
   cat(sprintf("R-squared:          %.4f\n", summary(trend_model)$r.squared))
 
   cat("\nFORMULA:\n")
-  obtain_function_from_model(trend_model)
+  pipsa_obtain_function_from_model(trend_model)
   cat("----------------------------------\n\n")
 
   plot(deseasonalized_data,
@@ -116,7 +116,7 @@ time_series <- function(data_array, initial_year, freq) {
 #' @examples
 #' auto_correl(c(1, 3, 2, 5, 4, 7, 6, 9), n = 2)
 #' @export
-auto_correl <- function(data, n) {
+pipsa_auto_correl <- function(data, n) {
   # Remove the last n data points
   xx1 <- head(data, -n)
   # Remove the first n data points
@@ -135,7 +135,7 @@ auto_correl <- function(data, n) {
 #' @examples
 #' calculate_correl(c(1, 4, 2, 8, 2, 4, 2, 8, 3, 5, 2, 9))
 #' @export
-calculate_correl <- function(data) {
+pipsa_calculate_correl <- function(data) {
   biggest <- 0
   bigfreq <- 1
   top <- 12
@@ -145,7 +145,7 @@ calculate_correl <- function(data) {
   }
 
   for (i in 1:top) {
-    current <- auto_correl(data, i)
+    current <- pipsa_auto_correl(data, i)
 
     if (current > biggest) {
       biggest <- current
@@ -171,7 +171,7 @@ calculate_correl <- function(data) {
 #' @examples
 #' obtain_function_from_model(lm(c(1, 2, 3) ~ c(4, 5, 6)))
 #' @export
-obtain_function_from_model <- function(model) {
+pipsa_obtain_function_from_model <- function(model) {
   intercept <- round(model$coefficients[1], 5)
   xslope <- round(model$coefficients[2], 5)
 
@@ -194,7 +194,7 @@ obtain_function_from_model <- function(model) {
 #' @return A data frame containing
 #' Nominal Values, CPI, Real Values, and Purchasing Power factor.
 #' @export
-calculate_deflation <- function(nominal_values, cpi_index) {
+pipsa_calculate_deflation <- function(nominal_values, cpi_index) {
   if (length(nominal_values) != length(cpi_index)) {
     stop(
       "Nominal values vector and CPI index vector must have the same length."

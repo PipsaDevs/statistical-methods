@@ -8,7 +8,7 @@
 #' @examples
 #' combination(5, 2)
 #' @export
-combination <- function(x, y) {
+pipsa_combination <- function(x, y) {
   choose(x, y)
 }
 
@@ -22,7 +22,7 @@ combination <- function(x, y) {
 #' @examples
 #' conditional_probability(c(0.1, 0.2, 0.3), c(0.01, 0.02, 0.03))
 #' @export
-conditional_probability <- function(x, y) {
+pipsa_conditional_probability <- function(x, y) {
   # both x and y will be an array of probabilities, c(a, b, c, ...)
 
   d <- 0
