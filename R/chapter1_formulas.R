@@ -353,7 +353,7 @@ pipsa_quantile_continuous <- function(c, N, L, N_prev, ni, ai) {
 #' Prints a lot of useful information from an array to the screen (and also returns info)
 #'
 #' @param x A numeric vector
-#' @return A list with the mean, median, mode, variance, standard deviation, coefficient of variation, skewness, kurtosis, and outliers
+#' @return A list with the mean, median, mode, iqr, variance, standard deviation, coefficient of variation, skewness, kurtosis, and outliers
 #' @examples
 #' vector_info(c(1, 2, 3, 4, 5))
 #' @export
