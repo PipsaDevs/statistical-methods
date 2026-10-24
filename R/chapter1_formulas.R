@@ -1,4 +1,19 @@
-# Basic stuff
+# ========================================================================0
+# GENERAL FUNCTIONS (shared by most files)
+
+#' Print
+#'
+#' Prints a number/series of numbers with the correct rounding to do the exam faster
+#' @param x A number or series of numbers we want to print
+#' @param round The number of decimals to round to (default is 5)
+#' @return The number printed on the console with correct rounding
+#' @examples
+#' print(3.14159)
+#' @export
+pipsa_print <- function(x, round = 5) {
+    print(round(x, round))
+}
+
 
 #' Absolute frequency
 #'
